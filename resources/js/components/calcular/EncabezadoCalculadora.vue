@@ -4,7 +4,11 @@ import { ChevronLeft } from '@lucide/vue';
 import { computed } from 'vue';
 import { buscarCalculadora, titulosSeccion } from '@/lib/catalogo';
 
-const props = defineProps<{ clave: string }>();
+const props = defineProps<{
+    clave: string;
+    /** En el celular oculta la descripción: el teclado necesita el lugar. */
+    compacto?: boolean;
+}>();
 
 const calc = computed(() => buscarCalculadora(props.clave));
 
@@ -25,7 +29,10 @@ const volver = computed(() => {
 
 <template>
     <Head :title="calc?.titulo" />
-    <div v-if="calc" class="mb-5 md:mb-7">
+    <div
+        v-if="calc"
+        :class="compacto ? 'mb-3 sm:mb-5 md:mb-7' : 'mb-5 md:mb-7'"
+    >
         <Link
             v-if="volver"
             :href="volver.href"
@@ -44,6 +51,13 @@ const volver = computed(() => {
                 {{ calc.titulo }}
             </h1>
         </div>
-        <p class="mt-2 text-muted-foreground">{{ calc.descripcion }}</p>
+        <p
+            :class="[
+                'mt-2 text-muted-foreground',
+                compacto && 'hidden sm:block',
+            ]"
+        >
+            {{ calc.descripcion }}
+        </p>
     </div>
 </template>

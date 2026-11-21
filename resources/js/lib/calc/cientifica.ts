@@ -102,6 +102,15 @@ function crearScope(modo: ModoAngulo, ans: string): Map<string, unknown> {
     return scope;
 }
 
+/** Cierra los paréntesis que quedaron abiertos: "sin(30" → "sin(30)". */
+export function cerrarParentesis(expresion: string): string {
+    const abiertos =
+        (expresion.match(/\(/g) ?? []).length -
+        (expresion.match(/\)/g) ?? []).length;
+
+    return abiertos > 0 ? expresion + ')'.repeat(abiertos) : expresion;
+}
+
 /** Traduce la expresión visible a sintaxis de mathjs. */
 export function traducir(expresion: string): string {
     let t = expresion
@@ -114,15 +123,7 @@ export function traducir(expresion: string): string {
         .replace(/,/g, '.')
         .replace(/;/g, ',');
 
-    // Cierra paréntesis que quedaron abiertos: "sin(30" → "sin(30)".
-    const abiertos =
-        (t.match(/\(/g) ?? []).length - (t.match(/\)/g) ?? []).length;
-
-    if (abiertos > 0) {
-        t += ')'.repeat(abiertos);
-    }
-
-    return t;
+    return cerrarParentesis(t);
 }
 
 export type ResultadoCientifica =

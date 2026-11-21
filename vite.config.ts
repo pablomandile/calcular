@@ -6,31 +6,43 @@ import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
 import { defineConfig, lazyPlugins } from 'vite-plus';
 
+// Los tests (vp test) son de lógica pura en resources/js/lib: no necesitan los
+// plugins de Laravel. El de Wayfinder, además, corre `php artisan` al
+// arrancar y en el CI choca con los workers de test en paralelo.
+const enTests = process.env.VITEST !== undefined;
+
 export default defineConfig({
-    plugins: lazyPlugins(() => [
-        laravel({
-            input: ['resources/css/app.css', 'resources/js/app.ts'],
-            refresh: true,
-            fonts: [
-                bunny('Inter', {
-                    weights: [400, 500, 600, 700],
-                }),
-            ],
-        }),
-        inertia(),
-        tailwindcss(),
-        vue({
-            template: {
-                transformAssetUrls: {
-                    base: null,
-                    includeAbsolute: false,
-                },
-            },
-        }),
-        wayfinder({
-            formVariants: true,
-        }),
-    ]),
+    test: {
+        include: ['resources/js/**/*.test.ts'],
+    },
+    plugins: lazyPlugins(() =>
+        enTests
+            ? []
+            : [
+                  laravel({
+                      input: ['resources/css/app.css', 'resources/js/app.ts'],
+                      refresh: true,
+                      fonts: [
+                          bunny('Inter', {
+                              weights: [400, 500, 600, 700],
+                          }),
+                      ],
+                  }),
+                  inertia(),
+                  tailwindcss(),
+                  vue({
+                      template: {
+                          transformAssetUrls: {
+                              base: null,
+                              includeAbsolute: false,
+                          },
+                      },
+                  }),
+                  wayfinder({
+                      formVariants: true,
+                  }),
+              ],
+    ),
     server: {
         watch: {
             ignored: [

@@ -288,7 +288,7 @@ function usarDeCinta(valor: unknown) {
 </script>
 
 <template>
-    <EncabezadoCalculadora clave="basica" />
+    <EncabezadoCalculadora clave="basica" compacto />
 
     <div class="grid items-start gap-6 lg:grid-cols-[minmax(0,26rem)_1fr]">
         <section
