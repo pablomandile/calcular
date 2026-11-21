@@ -88,6 +88,11 @@ describe('calculadora básica', () => {
         expect(pantalla(tipear('50%').e)).toBe('0,5');
     });
 
+    it('muestra el % en la cuenta guardada', () => {
+        const { registro } = tipear('200+10%=');
+        expect(registro).toEqual({ expresion: '200 + 10 %', resultado: '220' });
+    });
+
     it('después del % un dígito reemplaza el número pero no la cuenta', () => {
         expect(pantalla(tipear('100+5%7=').e)).toBe('107');
     });

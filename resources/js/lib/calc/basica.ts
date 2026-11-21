@@ -15,6 +15,10 @@ export type Operador = '+' | '−' | '×' | '÷';
 export type EstadoBasica = {
     /** Operandos y operadores ya cerrados: ["12", "+", "3", "×"]. */
     tokens: string[];
+    /** Cómo se muestra cada token: ["12", "+", "10 %", "×"]. */
+    etiquetas: string[];
+    /** Etiqueta especial del número en pantalla ("10 %" tras el %). */
+    etiquetaEntrada: string | null;
     /** Número que se está escribiendo, canónico con punto ("12.5"). */
     entrada: string;
     /** Expresión que dio el último resultado, para mostrar arriba. */
@@ -41,6 +45,8 @@ const OPERADORES: Operador[] = ['+', '−', '×', '÷'];
 export function estadoInicial(memoria = '0'): EstadoBasica {
     return {
         tokens: [],
+        etiquetas: [],
+        etiquetaEntrada: null,
         entrada: '0',
         expresionPrevia: null,
         recienCalculado: false,
@@ -81,7 +87,7 @@ export function digito(e: EstadoBasica, d: string): EstadoBasica {
         entrada = e.entrada + d;
     }
 
-    return { ...e, entrada };
+    return { ...e, entrada, etiquetaEntrada: null };
 }
 
 export function coma(e: EstadoBasica): EstadoBasica {
@@ -90,14 +96,19 @@ export function coma(e: EstadoBasica): EstadoBasica {
     }
 
     if (e.sobrescribir || e.entrada === '') {
-        return { ...e, entrada: '0.', sobrescribir: false };
+        return {
+            ...e,
+            entrada: '0.',
+            sobrescribir: false,
+            etiquetaEntrada: null,
+        };
     }
 
     if (e.entrada.includes('.')) {
         return e;
     }
 
-    return { ...e, entrada: e.entrada + '.' };
+    return { ...e, entrada: e.entrada + '.', etiquetaEntrada: null };
 }
 
 /**
@@ -114,6 +125,8 @@ export function operador(e: EstadoBasica, op: Operador): EstadoBasica {
         return {
             ...e,
             tokens: [normalizar(e.entrada), op],
+            etiquetas: [etiquetaDeEntrada(e), op],
+            etiquetaEntrada: null,
             entrada: '',
             recienCalculado: false,
             sobrescribir: false,
@@ -122,16 +135,34 @@ export function operador(e: EstadoBasica, op: Operador): EstadoBasica {
     }
 
     if (e.entrada === '' && esOperador(e.tokens.at(-1))) {
-        return { ...e, tokens: [...e.tokens.slice(0, -1), op] };
+        return {
+            ...e,
+            tokens: [...e.tokens.slice(0, -1), op],
+            etiquetas: [...e.etiquetas.slice(0, -1), op],
+        };
     }
 
     return {
         ...e,
         tokens: [...e.tokens, normalizar(e.entrada), op],
+        etiquetas: [...e.etiquetas, etiquetaDeEntrada(e), op],
+        etiquetaEntrada: null,
         entrada: '',
         sobrescribir: false,
         expresionPrevia: null,
     };
+}
+
+function etiquetaDeEntrada(e: EstadoBasica): string {
+    return (
+        e.etiquetaEntrada ??
+        formatearNumero(normalizar(e.entrada), { maxDecimales: 12 })
+    );
+}
+
+/** Lo que se muestra arriba del número: la cuenta en curso o la anterior. */
+export function expresionEnCurso(e: EstadoBasica): string {
+    return e.expresionPrevia ?? e.etiquetas.join(' ');
 }
 
 function normalizar(entrada: string): string {
@@ -182,19 +213,6 @@ export function evaluar(tokens: string[]): Dec {
     return total;
 }
 
-/** Texto para mostrar: "12 + 3,5 ×". */
-export function expresionVisible(tokens: string[], entrada = ''): string {
-    const partes = tokens.map((t) =>
-        esOperador(t) ? t : formatearNumero(t, { maxDecimales: 12 }),
-    );
-
-    if (entrada !== '') {
-        partes.push(entradaVisible(entrada));
-    }
-
-    return partes.join(' ');
-}
-
 /** La entrada tal cual se tipea, en formato argentino ("1.234,"). */
 export function entradaVisible(entrada: string): string {
     if (entrada === '') {
@@ -221,14 +239,17 @@ export function igual(e: EstadoBasica): {
     }
 
     let tokens = [...e.tokens];
+    let etiquetas = [...e.etiquetas];
 
     if (e.entrada === '') {
         tokens = tokens.slice(0, -1);
+        etiquetas = etiquetas.slice(0, -1);
     } else {
         tokens.push(normalizar(e.entrada));
+        etiquetas.push(etiquetaDeEntrada(e));
     }
 
-    const expresion = expresionVisible(tokens);
+    const expresion = etiquetas.join(' ');
 
     try {
         const resultado = evaluar(tokens);
@@ -237,6 +258,8 @@ export function igual(e: EstadoBasica): {
             estado: {
                 ...e,
                 tokens: [],
+                etiquetas: [],
+                etiquetaEntrada: null,
                 entrada: resultado.toString(),
                 expresionPrevia: expresion + ' =',
                 recienCalculado: true,
@@ -252,6 +275,8 @@ export function igual(e: EstadoBasica): {
             estado: {
                 ...e,
                 tokens: [],
+                etiquetas: [],
+                etiquetaEntrada: null,
                 entrada: '0',
                 expresionPrevia: expresion + ' =',
                 error: (error as Error).message,
@@ -286,6 +311,7 @@ export function porcentaje(e: EstadoBasica): EstadoBasica {
     return {
         ...e,
         entrada: nuevo.toString(),
+        etiquetaEntrada: entradaVisible(normalizar(e.entrada)) + ' %',
         recienCalculado: false,
         sobrescribir: true,
     };
@@ -301,6 +327,7 @@ export function cambiarSigno(e: EstadoBasica): EstadoBasica {
     return {
         ...e,
         entrada: entrada.startsWith('-') ? entrada.slice(1) : '-' + entrada,
+        etiquetaEntrada: null,
     };
 }
 
@@ -312,9 +339,13 @@ export function borrar(e: EstadoBasica): EstadoBasica {
 
     if (e.entrada === '' && esOperador(e.tokens.at(-1))) {
         // Sin entrada: se borra el operador y se recupera el número anterior.
-        const tokens = e.tokens.slice(0, -2);
-
-        return { ...e, tokens, entrada: e.tokens.at(-2) ?? '0' };
+        return {
+            ...e,
+            tokens: e.tokens.slice(0, -2),
+            etiquetas: e.etiquetas.slice(0, -2),
+            entrada: e.tokens.at(-2) ?? '0',
+            etiquetaEntrada: null,
+        };
     }
 
     const entrada = e.entrada.slice(0, -1);
@@ -322,6 +353,7 @@ export function borrar(e: EstadoBasica): EstadoBasica {
     return {
         ...e,
         entrada: entrada === '' || entrada === '-' ? '0' : entrada,
+        etiquetaEntrada: null,
     };
 }
 
@@ -331,7 +363,7 @@ export function limpiarEntrada(e: EstadoBasica): EstadoBasica {
         return estadoInicial(e.memoria);
     }
 
-    return { ...e, entrada: '0' };
+    return { ...e, entrada: '0', etiquetaEntrada: null };
 }
 
 /** C: borra todo menos la memoria. */
@@ -365,11 +397,7 @@ export function memoriaRestar(e: EstadoBasica): EstadoBasica {
 }
 
 export function memoriaRecuperar(e: EstadoBasica): EstadoBasica {
-    if (e.recienCalculado || e.error) {
-        e = { ...estadoInicial(e.memoria) };
-    }
-
-    return { ...e, entrada: e.memoria, sobrescribir: true };
+    return usarValor(e, e.memoria);
 }
 
 export function memoriaLimpiar(e: EstadoBasica): EstadoBasica {
@@ -393,4 +421,18 @@ export function pantalla(e: EstadoBasica): string {
     }
 
     return entradaVisible(e.entrada);
+}
+
+/** Pone un valor (de la memoria o del historial) como número en pantalla. */
+export function usarValor(e: EstadoBasica, valor: string): EstadoBasica {
+    if (e.recienCalculado || e.error) {
+        e = { ...estadoInicial(e.memoria) };
+    }
+
+    return {
+        ...e,
+        entrada: new D(valor).toString(),
+        etiquetaEntrada: null,
+        sobrescribir: true,
+    };
 }
