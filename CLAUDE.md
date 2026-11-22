@@ -76,7 +76,7 @@ ahí: una clave nueva sin declarar rompe la suite. Si algún día entra algo no 
 - **Al cambiar íconos o la lógica del SW:** subir `VERSION` en `sw.js`, el `?v=` en
   `app.blade.php` y en `manifest.webmanifest`.
 - La marca vive en `resources/marca/` (originales grandes, no se sirven):
-  `isotipo.png` para los íconos de la PWA y los favicons, `logo-con-nombre.png` para
+  `isotipo.png` para los íconos de la PWA, los favicons y la barra superior, `logo-con-nombre.png` para
   login/registro (con variante oscura: "Calcul" en blanco) y la imagen para compartir.
   `npm run generar:iconos` recorta y exporta todo a `public/`.
 - `.htaccess` sirve `sw.js` y el manifest sin caché (el CDN de Hostinger los guardaba).

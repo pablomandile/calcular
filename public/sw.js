@@ -53,7 +53,11 @@ const PUBLICAS = [
     '/cookies',
 ];
 
-const ARCHIVOS_FIJOS = ['/manifest.webmanifest', '/iconos/icon-192.png?v=2'];
+const ARCHIVOS_FIJOS = [
+    '/manifest.webmanifest',
+    '/iconos/icon-192.png?v=2',
+    '/img/isotipo.webp?v=1',
+];
 
 /** Todos los archivos del build, sacados de los manifest de Vite. */
 async function archivosDelBuild() {

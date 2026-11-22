@@ -76,6 +76,15 @@ const SALIDAS = [
         alto: 32,
         ocupa: 1,
     },
+    // Isotipo de la barra superior: se muestra a 32 px, al triple para pantallas densas.
+    {
+        fuente: 'isotipo',
+        destino: 'public/img/isotipo.webp',
+        ancho: 96,
+        alto: 96,
+        ocupa: 1,
+        formato: 'image/webp',
+    },
     // Logo de ingreso y registro: se muestra a 240 px de ancho, al doble para pantallas densas.
     {
         fuente: 'logo',
