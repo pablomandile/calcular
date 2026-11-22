@@ -1,0 +1,35 @@
+{
+    "slug": "calcular",
+    "title": "CalculAR",
+    "description": {
+        "es": "CalculAR reúne las cuentas que se hacen todos los días en la Argentina, con explicación y ejemplo en cada una: calculadora normal y científica, TNA y TEA, plazo fijo, interés compuesto, cuánto rinde por día la plata en Mercado Pago, si conviene pagar en cuotas o de contado, descuentos con tope de reintegro, porcentajes y fechas (días hábiles con los feriados nacionales, sumar y restar días, edad exacta).\n\nLa sección de inflación trae los datos oficiales del IPC del INDEC y del CER y la UVA del BCRA, que se actualizan solos todos los días, para calcular la inflación acumulada entre dos meses o cuánto vale hoy un monto de otra fecha. Se usa sin cuenta, la matemática va con precisión decimal (0,1 + 0,2 da 0,3), es instalable como PWA y funciona sin conexión. Con una cuenta (Google o email) el historial se sincroniza entre dispositivos.",
+        "en": "CalculAR brings together the everyday calculations people make in Argentina, each with an explanation and a worked example: a standard and a scientific calculator, nominal and effective annual rates (TNA and TEA), fixed-term deposits, compound interest, how much money earns per day in Mercado Pago, whether paying in installments beats paying upfront, capped cashback discounts, percentages and dates (business days with national holidays, adding and subtracting days, exact age).\n\nThe inflation section pulls official data from INDEC (consumer price index) and the Central Bank (CER and UVA indexes), updated automatically every day, to work out accumulated inflation between two months or what an old amount is worth today. It works without an account, the math uses decimal precision (0.1 + 0.2 equals 0.3), and it installs as a PWA that works offline. With an account (Google or email) the history syncs across devices."
+    },
+    "repo_url": "https://github.com/pablomandile/calcular",
+    "technologies": [
+        "Laravel",
+        "PHP",
+        "Vue.js",
+        "Tailwind CSS",
+        "PWA",
+        "Claude Code"
+    ],
+    "logo": "public/iconos/icon-512.png",
+    "demo": {
+        "url": "https://calcular.bambudev.com.ar",
+        "login_path": "/login",
+        "demo_button": null,
+        "email": null,
+        "password": null,
+        "expect": "CalculAR"
+    },
+    "screenshots": [
+        { "name": "inicio", "path": "/" },
+        { "name": "inflacion", "path": "/inflacion/serie-mensual" },
+        { "name": "cientifica", "path": "/cientifica" },
+        { "name": "finanzas", "path": "/finanzas" },
+        { "name": "dias-habiles", "path": "/fechas/dias-habiles" }
+    ],
+    "mobile": true,
+    "ocultar": []
+}
