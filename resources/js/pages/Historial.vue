@@ -41,6 +41,7 @@ const filtros: { valor: Filtro; titulo: string; tipos: TipoCalculo[] }[] = [
             'interes-compuesto',
             'interes-en-cuotas',
             'contado-vs-cuotas',
+            'descuento-con-tope',
             'porcentajes',
         ],
     },

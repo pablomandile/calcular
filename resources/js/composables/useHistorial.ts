@@ -18,6 +18,7 @@ export type TipoCalculo =
     | 'interes-compuesto'
     | 'interes-en-cuotas'
     | 'contado-vs-cuotas'
+    | 'descuento-con-tope'
     | 'inflacion-ipc'
     | 'inflacion-acumulada'
     | 'actualizar-monto'

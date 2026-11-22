@@ -9,6 +9,7 @@ import {
 import { inflacionAcumulada } from './calc/inflacion';
 import { D } from './calc/numero';
 import { interesEnCuotas } from './calc/cuotas';
+import { descuentoConTope } from './calc/descuentos';
 import { teaDesdeTna } from './calc/tasas';
 import {
     preguntasFechas,
@@ -140,6 +141,14 @@ describe('preguntas frecuentes de finanzas: los ejemplos son ciertos', () => {
         expect(r.tasaMensual.toDecimalPlaces(4).toNumber()).toBe(0.0455);
         expect(r.tea.toDecimalPlaces(3).toNumber()).toBe(0.706);
         expect(r.recargoPorcentaje.toNumber()).toBe(0.32);
+    });
+
+    it('20 % con tope de $ 6.000: hasta $ 30.000; con $ 60.000, 10 % real', () => {
+        expect(texto('¿Cuánto puedo gastar')).toContain('$ 30.000');
+        const r = descuentoConTope(new D('0.2'), new D(6000), new D(60000));
+
+        expect(r.compraMaxima.toNumber()).toBe(30000);
+        expect(r.compra!.descuentoEfectivo.toNumber()).toBe(0.1);
     });
 
     it('30 % de rendimiento con 25 % de inflación: 4 % real', () => {

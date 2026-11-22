@@ -26,6 +26,7 @@ Route::prefix('finanzas')->name('finanzas.')->group(function () {
     Route::inertia('interes-compuesto', 'finanzas/InteresCompuesto')->name('interes-compuesto');
     Route::inertia('interes-en-cuotas', 'finanzas/InteresEnCuotas')->name('interes-en-cuotas');
     Route::inertia('contado-vs-cuotas', 'finanzas/ContadoVsCuotas')->name('contado-vs-cuotas');
+    Route::inertia('descuento-con-tope', 'finanzas/DescuentoConTope')->name('descuento-con-tope');
 });
 
 Route::prefix('fechas')->name('fechas.')->group(function () {

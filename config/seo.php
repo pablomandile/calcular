@@ -28,7 +28,7 @@ return [
     ],
     'finanzas.index' => [
         'titulo' => 'Calculadoras financieras',
-        'descripcion' => 'TNA y TEA, plazo fijo, interés compuesto, interés en cuotas, contado o cuotas y porcentajes, con las fórmulas explicadas.',
+        'descripcion' => 'TNA y TEA, plazo fijo, interés compuesto, interés en cuotas, contado o cuotas, descuentos con tope y porcentajes, con las fórmulas explicadas.',
     ],
     'finanzas.tna-tea' => [
         'titulo' => 'Calculadora de TNA a TEA (y TEA a TNA)',
@@ -49,6 +49,10 @@ return [
     'finanzas.contado-vs-cuotas' => [
         'titulo' => 'Contado o cuotas: qué conviene',
         'descripcion' => 'Compará el precio de contado con un plan en cuotas según lo que rinde tu plata y la inflación esperada: valor presente, tasa del plan y ahorro.',
+    ],
+    'finanzas.descuento-con-tope' => [
+        'titulo' => 'Calculadora de descuento con tope',
+        'descripcion' => 'Cuánto podés gastar para aprovechar entero un descuento o reintegro con tope, cuánto te devuelven y qué descuento real te queda si te pasás.',
     ],
     'inflacion.index' => [
         'titulo' => 'Calculadoras de inflación',

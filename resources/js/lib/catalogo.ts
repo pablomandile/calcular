@@ -1,5 +1,6 @@
 import type { LucideIcon } from '@lucide/vue';
 import {
+    BadgePercent,
     Cake,
     Calculator,
     CalendarClock,
@@ -105,6 +106,15 @@ export const calculadoras: Calculadora[] = [
         descripcion: 'Qué conviene según lo que rinde tu plata y la inflación.',
         href: '/finanzas/contado-vs-cuotas',
         icono: Scale,
+        seccion: 'finanzas',
+    },
+    {
+        clave: 'descuento-con-tope',
+        titulo: 'Descuento con tope',
+        descripcion:
+            'Cuánto gastar para aprovechar entero un reintegro con tope.',
+        href: '/finanzas/descuento-con-tope',
+        icono: BadgePercent,
         seccion: 'finanzas',
     },
     {

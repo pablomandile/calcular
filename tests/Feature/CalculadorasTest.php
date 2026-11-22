@@ -27,6 +27,7 @@ class CalculadorasTest extends TestCase
             'interes-compuesto' => ['/finanzas/interes-compuesto', 'finanzas/InteresCompuesto'],
             'interes-en-cuotas' => ['/finanzas/interes-en-cuotas', 'finanzas/InteresEnCuotas'],
             'contado-vs-cuotas' => ['/finanzas/contado-vs-cuotas', 'finanzas/ContadoVsCuotas'],
+            'descuento-con-tope' => ['/finanzas/descuento-con-tope', 'finanzas/DescuentoConTope'],
             'inflacion' => ['/inflacion', 'inflacion/Index'],
             'inflacion-ipc' => ['/inflacion/ipc', 'inflacion/Ipc'],
             'inflacion-acumulada' => ['/inflacion/acumulada', 'inflacion/Acumulada'],

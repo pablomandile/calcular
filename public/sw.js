@@ -34,6 +34,7 @@ const PUBLICAS = [
     '/finanzas/interes-compuesto',
     '/finanzas/interes-en-cuotas',
     '/finanzas/contado-vs-cuotas',
+    '/finanzas/descuento-con-tope',
     '/inflacion',
     '/inflacion/ipc',
     '/inflacion/acumulada',

@@ -12,7 +12,8 @@ const porcentajes = buscarCalculadora('porcentajes');
     <Head title="Finanzas" />
     <h1 class="text-2xl font-bold tracking-tight md:text-3xl">Finanzas</h1>
     <p class="mt-2 mb-6 text-muted-foreground">
-        Tasas, plazo fijo, interés compuesto, compras en cuotas y porcentajes.
+        Tasas, plazo fijo, interés compuesto, compras en cuotas, descuentos con
+        tope y porcentajes.
     </p>
     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <TarjetaCalculadora

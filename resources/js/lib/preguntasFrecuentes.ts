@@ -153,6 +153,12 @@ export const preguntasFinanzas: PreguntaFrecuente[] = [
         ],
     },
     {
+        pregunta: '¿Cuánto puedo gastar para aprovechar un reintegro con tope?',
+        respuesta: [
+            'Dividí el tope por el porcentaje. Con un 20 % de reintegro y tope de $ 6.000, son $ 6.000 / 0,20 = $ 30.000. Hasta ahí tenés el 20 % entero; si gastás $ 60.000, te devuelven igual $ 6.000 y el descuento real baja al 10 %.',
+        ],
+    },
+    {
         pregunta: '¿La tasa de las cuotas es lo mismo que el CFT?',
         respuesta: [
             'Es lo mismo si todo lo que pagás está dentro de la cuota. El costo financiero total (CFT), que los bancos y comercios tienen que informar, suma además el IVA sobre los intereses, seguros, sellados y comisiones. Si pagás algo de eso aparte, cargalo como costo en contado vs. cuotas.',
