@@ -15,6 +15,8 @@ import ManageTwoFactor from '@/components/ManageTwoFactor.vue';
 // oxfmt-ignore
 type Props = {
     passwordRules: string;
+    /** Falso en las cuentas que entran con Google: nunca eligieron una. */
+    tieneContrasena: boolean;
 } & ManagePasskeysProps &
     ManageTwoFactorProps;
 
@@ -40,8 +42,16 @@ defineOptions({
     <div class="space-y-6">
         <Heading
             variant="small"
-            title="Cambiar la contraseña"
-            description="Usá una contraseña larga y difícil de adivinar"
+            :title="
+                tieneContrasena
+                    ? 'Cambiar la contraseña'
+                    : 'Definir una contraseña'
+            "
+            :description="
+                tieneContrasena
+                    ? 'Usá una contraseña larga y difícil de adivinar'
+                    : 'Entrás con Google. Si querés, definí una contraseña para poder entrar también con tu email.'
+            "
         />
 
         <Form
@@ -58,7 +68,7 @@ defineOptions({
             class="space-y-6"
             v-slot="{ errors, processing }"
         >
-            <div class="grid gap-2">
+            <div v-if="tieneContrasena" class="grid gap-2">
                 <Label for="current_password">Contraseña actual</Label>
                 <PasswordInput
                     id="current_password"

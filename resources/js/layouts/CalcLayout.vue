@@ -154,7 +154,14 @@ function alternarTema() {
             class="hidden border-t border-border/80 py-6 text-center text-sm text-muted-foreground md:block"
         >
             Calcul<span class="font-semibold text-celeste">AR</span> · Hecho en
-            Argentina · Los resultados son orientativos.
+            Argentina · Los resultados son orientativos ·
+            <Link href="/terminos" class="underline-offset-4 hover:underline"
+                >Términos</Link
+            >
+            ·
+            <Link href="/privacidad" class="underline-offset-4 hover:underline"
+                >Privacidad</Link
+            >
         </footer>
 
         <nav

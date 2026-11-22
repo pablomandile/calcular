@@ -33,7 +33,22 @@ class UserFactory extends Factory
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
             'two_factor_confirmed_at' => null,
+            // Por defecto aceptó la versión vigente: si no, el middleware
+            // AceptoTerminos frenaría a todos los usuarios de prueba.
+            'terminos_version' => config('legales.version'),
+            'terminos_aceptados_en' => now(),
         ];
+    }
+
+    /**
+     * Cuenta que todavía no aceptó los términos vigentes.
+     */
+    public function sinAceptarTerminos(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'terminos_version' => null,
+            'terminos_aceptados_en' => null,
+        ]);
     }
 
     /**

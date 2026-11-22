@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -52,6 +53,12 @@ class ProfileController extends Controller
 
         Auth::logout();
 
+        /*
+         * Borrado real e inmediato, como promete la política de privacidad:
+         * el historial se va en cascada (FK de calculos), y las sesiones
+         * abiertas en otros dispositivos se borran a mano (no tienen FK).
+         */
+        DB::table('sessions')->where('user_id', $user->id)->delete();
         $user->delete();
 
         $request->session()->invalidate();

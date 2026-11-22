@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Download } from '@lucide/vue';
+import { datos as misDatos } from '@/routes/exportacion';
 import { Form, Head, usePage } from '@inertiajs/vue3';
 import { Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
@@ -100,6 +102,20 @@ const user = computed(() => page.props.auth.user!);
                 >
             </div>
         </Form>
+    </div>
+
+    <div class="space-y-4">
+        <Heading
+            variant="small"
+            title="Tus datos"
+            description="Un archivo con tu cuenta y todo tu historial de cálculos."
+        />
+        <Button as-child variant="outline">
+            <a :href="misDatos().url" download data-test="descargar-datos">
+                <Download />
+                Descargar mis datos
+            </a>
+        </Button>
     </div>
 
     <DeleteUser />

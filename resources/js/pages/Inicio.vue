@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import TarjetaCalculadora from '@/components/calcular/TarjetaCalculadora.vue';
 import type { Seccion } from '@/lib/catalogo';
 import { deSeccion, titulosSeccion } from '@/lib/catalogo';
@@ -34,4 +34,14 @@ const secciones: Seccion[] = ['basicas', 'finanzas', 'fechas'];
             />
         </div>
     </section>
+
+    <p class="mt-10 text-center text-sm text-muted-foreground md:hidden">
+        <Link href="/terminos" class="underline underline-offset-4"
+            >Términos</Link
+        >
+        ·
+        <Link href="/privacidad" class="underline underline-offset-4"
+            >Privacidad</Link
+        >
+    </p>
 </template>

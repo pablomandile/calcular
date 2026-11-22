@@ -33,6 +33,8 @@ export type Calculo = {
     nota: string | null;
     /** ISO 8601 con hora. */
     creado_en: string;
+    /** Última edición de la nota: entre dispositivos gana la más reciente. */
+    actualizado_en?: string | null;
 };
 
 export type NuevoCalculo = Pick<
@@ -113,6 +115,11 @@ export function cargarHistorial(): Promise<void> {
     return carga;
 }
 
+/** La copia local tal como está (la usa la sincronización). */
+export function historialLocal(): Calculo[] {
+    return items.value;
+}
+
 /** Reemplaza la lista local entera (la usa la sincronización). */
 export async function reemplazarHistorial(lista: Calculo[]): Promise<void> {
     items.value = ordenar(lista);
@@ -145,6 +152,7 @@ export function useHistorial() {
         }
 
         c.nota = nota.trim() === '' ? null : nota.trim();
+        c.actualizado_en = new Date().toISOString();
         void persistir();
         oyentes.alActualizar?.(c);
     }

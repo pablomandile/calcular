@@ -19,7 +19,7 @@ declare module '@inertiajs/core' {
         sharedPageProps: {
             name: string;
             auth: Auth;
-            sidebarOpen: boolean;
+            googleHabilitado: boolean;
             [key: string]: unknown;
         };
     }

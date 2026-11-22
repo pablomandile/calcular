@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SecurityController;
-use Illuminate\Auth\Middleware\RequirePassword;
+use App\Http\Middleware\ConfirmarClaveSiLaTiene;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
@@ -16,7 +16,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('settings/security', [SecurityController::class, 'edit'])
-        ->middleware(RequirePassword::class)
+        // No el RequirePassword de Laravel: a una cuenta de Google, que no
+        // tiene contraseña, la dejaría afuera para siempre.
+        ->middleware(ConfirmarClaveSiLaTiene::class)
         ->name('security.edit');
 
     Route::put('settings/password', [SecurityController::class, 'update'])

@@ -14,6 +14,9 @@ abstract class TestCase extends BaseTestCase
 
         // Ningún test sale a internet: la API de feriados se simula con Http::fake.
         Http::preventStrayRequests();
+
+        // Las respuestas no dependen del build de Vite (public/build).
+        $this->withoutVite();
     }
 
     protected function skipUnlessFortifyHas(string $feature, ?string $message = null): void

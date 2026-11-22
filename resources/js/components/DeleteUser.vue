@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Form } from '@inertiajs/vue3';
-import { useTemplateRef } from 'vue';
+import { Form, usePage } from '@inertiajs/vue3';
+import { computed, useTemplateRef } from 'vue';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import Heading from '@/components/Heading.vue';
 import InputError from '@/components/InputError.vue';
@@ -19,6 +19,11 @@ import {
 import { Label } from '@/components/ui/label';
 
 const passwordInput = useTemplateRef('passwordInput');
+
+// Las cuentas de Google no tienen contraseña: no se les pide.
+const tieneContrasena = computed(
+    () => usePage().props.auth?.tieneContrasena === true,
+);
 </script>
 
 <template>
@@ -58,13 +63,17 @@ const passwordInput = useTemplateRef('passwordInput');
                                 cuenta?</DialogTitle
                             >
                             <DialogDescription>
-                                Cuando elimines la cuenta, todos sus datos se
-                                borran para siempre. Ingresá tu contraseña para
-                                confirmar.
+                                Se borran en el momento tu cuenta y todo tu
+                                historial, y no se pueden recuperar. Si querés
+                                guardar una copia, descargá tus datos antes.
+                                <template v-if="tieneContrasena"
+                                    >Ingresá tu contraseña para
+                                    confirmar.</template
+                                >
                             </DialogDescription>
                         </DialogHeader>
 
-                        <div class="grid gap-2">
+                        <div v-if="tieneContrasena" class="grid gap-2">
                             <Label for="password" class="sr-only"
                                 >Contraseña</Label
                             >

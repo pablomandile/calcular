@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
+import BotonGoogle from '@/components/BotonGoogle.vue';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import TextLink from '@/components/TextLink.vue';
@@ -7,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
-import { login } from '@/routes';
+import { login, privacidad, terminos } from '@/routes';
 import { store } from '@/routes/register';
 
 defineProps<{
@@ -24,6 +25,8 @@ defineOptions({
 
 <template>
     <Head title="Crear cuenta" />
+
+    <BotonGoogle modo="registrarse" class="mb-6" />
 
     <Form
         v-bind="store.form()"
@@ -87,6 +90,39 @@ defineOptions({
                     :passwordrules="passwordRules"
                 />
                 <InputError :message="errors.password_confirmation" />
+            </div>
+
+            <div class="grid gap-1">
+                <label
+                    class="flex min-h-11 cursor-pointer items-start gap-3 text-sm text-pretty"
+                >
+                    <input
+                        type="checkbox"
+                        name="terminos"
+                        value="1"
+                        required
+                        :tabindex="5"
+                        class="mt-0.5 size-5 shrink-0 accent-primary"
+                        data-test="aceptar-terminos"
+                    />
+                    <span>
+                        Leí y acepto los
+                        <a
+                            :href="terminos().url"
+                            target="_blank"
+                            class="underline underline-offset-4 hover:text-primary"
+                            >términos y condiciones</a
+                        >
+                        y la
+                        <a
+                            :href="privacidad().url"
+                            target="_blank"
+                            class="underline underline-offset-4 hover:text-primary"
+                            >política de privacidad</a
+                        >.
+                    </span>
+                </label>
+                <InputError :message="errors.terminos" />
             </div>
 
             <Button

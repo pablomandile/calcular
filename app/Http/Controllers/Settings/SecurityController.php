@@ -38,6 +38,9 @@ class SecurityController extends Controller
                     ->all()
                 : [],
             'passwordRules' => Password::defaults()->toPasswordRulesString(),
+            // Quien entró con Google no tiene contraseña: la pantalla le
+            // ofrece definir una y no le pide la actual.
+            'tieneContrasena' => filled($request->user()?->getAuthPassword()),
         ];
 
         if (Features::canManageTwoFactorAuthentication()) {

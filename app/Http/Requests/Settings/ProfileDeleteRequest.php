@@ -17,6 +17,12 @@ class ProfileDeleteRequest extends FormRequest
      */
     public function rules(): array
     {
+        // Sin contraseña no se pide contraseña: con la regla fija, una cuenta
+        // de Google no podría eliminarse nunca.
+        if (blank($this->user()?->getAuthPassword())) {
+            return [];
+        }
+
         return [
             'password' => $this->currentPasswordRules(),
         ];

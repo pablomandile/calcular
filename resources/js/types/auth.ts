@@ -13,6 +13,8 @@ export type User = {
 export type Auth = {
     /** null para quien usa la app sin cuenta (el caso más común). */
     user: User | null;
+    /** False en las cuentas que entran con Google (nunca eligieron una). */
+    tieneContrasena: boolean;
 };
 
 export type Passkey = {

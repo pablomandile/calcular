@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AceptoTerminos;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Foundation\Application;
@@ -21,6 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+            // En todo el grupo web: una ruta nueva nace cubierta. Las exentas
+            // están a la vista en AceptoTerminos::EXENTAS.
+            AceptoTerminos::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
