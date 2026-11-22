@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
+import AvisoCookies from '@/components/AvisoCookies.vue';
 import { LogIn, Moon, Sun } from '@lucide/vue';
 import { computed } from 'vue';
 import LogoCalculAR from '@/components/calcular/LogoCalculAR.vue';
@@ -162,39 +163,55 @@ function alternarTema() {
             <Link href="/privacidad" class="underline-offset-4 hover:underline"
                 >Privacidad</Link
             >
+            ·
+            <Link href="/cookies" class="underline-offset-4 hover:underline"
+                >Cookies</Link
+            >
         </footer>
 
-        <nav
-            class="zona-segura-abajo fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card/95 backdrop-blur md:hidden"
-            aria-label="Principal"
-        >
-            <ul class="mx-auto grid max-w-md grid-cols-5">
-                <li v-for="item in navegacion" :key="item.href">
-                    <Link
-                        :href="item.href"
-                        :class="
-                            cn(
-                                'flex h-16 flex-col items-center justify-center gap-1 text-[11px] font-medium text-muted-foreground transition-colors',
-                                estaActivo(item) && 'text-primary',
-                            )
-                        "
-                        :aria-current="estaActivo(item) ? 'page' : undefined"
-                    >
-                        <span
+        <!--
+            Zona fija inferior del celular: el aviso de cookies va acá adentro,
+            apilado arriba de la barra, para no taparla.
+        -->
+        <div class="fixed inset-x-0 bottom-0 z-30 md:hidden">
+            <AvisoCookies variante="apilado" />
+            <nav
+                class="zona-segura-abajo border-t border-border bg-card/95 backdrop-blur"
+                aria-label="Principal"
+            >
+                <ul class="mx-auto grid max-w-md grid-cols-5">
+                    <li v-for="item in navegacion" :key="item.href">
+                        <Link
+                            :href="item.href"
                             :class="
                                 cn(
-                                    'flex h-7 w-12 items-center justify-center rounded-full transition-colors',
-                                    estaActivo(item) && 'bg-celeste-suave',
+                                    'flex h-16 flex-col items-center justify-center gap-1 text-[11px] font-medium text-muted-foreground transition-colors',
+                                    estaActivo(item) && 'text-primary',
                                 )
                             "
+                            :aria-current="
+                                estaActivo(item) ? 'page' : undefined
+                            "
                         >
-                            <component :is="item.icono" class="size-5" />
-                        </span>
-                        {{ item.titulo }}
-                    </Link>
-                </li>
-            </ul>
-        </nav>
+                            <span
+                                :class="
+                                    cn(
+                                        'flex h-7 w-12 items-center justify-center rounded-full transition-colors',
+                                        estaActivo(item) && 'bg-celeste-suave',
+                                    )
+                                "
+                            >
+                                <component :is="item.icono" class="size-5" />
+                            </span>
+                            {{ item.titulo }}
+                        </Link>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Escritorio: tarjeta abajo a la izquierda (los avisos van arriba). -->
+        <AvisoCookies class="hidden md:block" />
 
         <Toaster position="top-center" />
     </div>

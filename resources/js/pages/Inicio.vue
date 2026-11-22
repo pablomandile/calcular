@@ -43,5 +43,9 @@ const secciones: Seccion[] = ['basicas', 'finanzas', 'fechas'];
         <Link href="/privacidad" class="underline underline-offset-4"
             >Privacidad</Link
         >
+        ·
+        <Link href="/cookies" class="underline underline-offset-4"
+            >Cookies</Link
+        >
     </p>
 </template>

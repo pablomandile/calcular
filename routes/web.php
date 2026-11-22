@@ -40,6 +40,7 @@ Route::get('api/feriados/{anio}', [FeriadoController::class, 'index'])
 // Textos legales: públicos.
 Route::get('terminos', [LegalesController::class, 'terminos'])->name('terminos');
 Route::get('privacidad', [LegalesController::class, 'privacidad'])->name('privacidad');
+Route::inertia('cookies', 'Cookies')->name('cookies');
 
 Route::middleware('auth')->group(function () {
     Route::get('terminos/aceptar', [LegalesController::class, 'aceptar'])->name('terminos.aceptar');
