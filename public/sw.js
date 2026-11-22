@@ -128,11 +128,35 @@ function guardable(respuesta) {
     return respuesta && respuesta.status === 200 && !respuesta.redirected;
 }
 
-async function primeroLaRed(request, nombreCache, { guardar, clave }) {
+/**
+ * Una navegación que recibe el JSON de Inertia (lo guardó la caché HTTP del
+ * navegador bajo la misma URL, porque el CDN borra el Vary): se vuelve a pedir
+ * el HTML salteando esa caché.
+ */
+async function pedirDocumento(request) {
+    const respuesta = await fetch(request);
+
+    if (!respuesta.headers.get('x-inertia')) {
+        return respuesta;
+    }
+
+    const recuperada = await fetch(request.url, {
+        cache: 'reload',
+        headers: { Accept: 'text/html' },
+    });
+
+    // Una respuesta ya redirigida (sesión vencida → login) no se le puede
+    // entregar a una navegación: se le pasa el redirect al navegador.
+    return recuperada.redirected
+        ? Response.redirect(recuperada.url, 302)
+        : recuperada;
+}
+
+async function primeroLaRed(request, nombreCache, { guardar, clave, pedir }) {
     const cache = await caches.open(nombreCache);
 
     try {
-        const respuesta = await fetch(request);
+        const respuesta = await (pedir ?? fetch)(request);
 
         if (guardar && guardable(respuesta)) {
             await cache.put(clave ?? request, respuesta.clone());
@@ -215,6 +239,7 @@ self.addEventListener('fetch', (evento) => {
             primeroLaRed(request, CACHE_PAGINAS, {
                 guardar: esPublica(url),
                 clave: url.pathname,
+                pedir: pedirDocumento,
             }).catch(async () => {
                 const inicio = await caches.match('/', {
                     cacheName: CACHE_PAGINAS,

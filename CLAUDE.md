@@ -76,6 +76,9 @@ ahí: una clave nueva sin declarar rompe la suite. Si algún día entra algo no 
 - **Al cambiar íconos o la lógica del SW:** subir `VERSION` en `sw.js`, el `?v=` en
   `app.blade.php` y en `manifest.webmanifest`. Íconos: `npm run generar:iconos`.
 - `.htaccess` sirve `sw.js` y el manifest sin caché (el CDN de Hostinger los guardaba).
+- El CDN de Hostinger borra el `Vary: X-Inertia`: `HandleInertiaRequests::handle` pone
+  `no-store` **solo** en el JSON (en el HTML apagaría el bfcache) y el SW vuelve a pedir el
+  HTML si una navegación recibe JSON. Lo fija `CacheDeInertiaTest`.
 
 ## Pantalla
 

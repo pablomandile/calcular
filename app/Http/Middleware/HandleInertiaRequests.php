@@ -4,9 +4,12 @@ namespace App\Http\Middleware;
 
 use App\Enums\TamanioTexto;
 use App\Services\IngresoConGoogleService;
+use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Inertia\Middleware;
+use Inertia\Support\Header;
+use Symfony\Component\HttpFoundation\Response;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -18,6 +21,30 @@ class HandleInertiaRequests extends Middleware
      * @var string
      */
     protected $rootView = 'app';
+
+    /**
+     * La misma URL contesta HTML o JSON según X-Inertia, y el CDN de Hostinger
+     * borra el Vary que las distingue (con brotli lo saca entero). Sin esto,
+     * una pestaña restaurada muestra el JSON crudo en vez de la página.
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        $response = parent::handle($request, $next);
+
+        // Se declara igual: sirve en cualquier intermediario que lo respete.
+        $response->headers->set('Vary', Header::INERTIA.', Accept-Encoding');
+
+        /*
+         * `no-store` y no `no-cache`: `no-cache` deja guardar y una navegación
+         * de historial saltea la revalidación. Y solo en la respuesta JSON,
+         * nunca en el HTML: `no-store` en el documento apaga el bfcache.
+         */
+        if ($request->header(Header::INERTIA)) {
+            $response->headers->set('Cache-Control', 'no-store, private');
+        }
+
+        return $response;
+    }
 
     /**
      * Determines the current asset version.
