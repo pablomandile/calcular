@@ -77,6 +77,12 @@ class AvisoCookiesTest extends TestCase
             }
         }
 
+        // Las cachés del service worker, sin el número de versión.
+        preg_match_all('/const CACHE_\w+ = `([a-z-]+-v)\$\{VERSION\}`/', $this->fuente('public/sw.js'), $m);
+        foreach ($m[1] as $cache) {
+            $claves[$cache] = 'public/sw.js';
+        }
+
         return $claves;
     }
 
@@ -95,6 +101,9 @@ class AvisoCookiesTest extends TestCase
             'calcular.sync.usuario',
             'calcular.aviso-cookies',
             'historial',
+            'calcular-app-v',
+            'calcular-paginas-v',
+            'calcular-inertia-v',
         ] as $esperada) {
             $this->assertArrayHasKey($esperada, $claves, "La búsqueda no encontró «{$esperada}»");
         }

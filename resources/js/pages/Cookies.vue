@@ -79,6 +79,16 @@ const GRUPOS: Grupo[] = [
                 dura: 'Hasta que se sincronizan o salís de la cuenta',
             },
             {
+                nombre: 'calcular-app-v…',
+                para: 'La app en sí (diseño, íconos, código), para que abra rápido y funcione sin señal. No tiene datos tuyos.',
+                dura: 'Hasta la próxima versión de CalculAR',
+            },
+            {
+                nombre: 'calcular-paginas-v… · calcular-inertia-v…',
+                para: 'Las pantallas de las calculadoras, para abrirlas sin conexión. Con sesión incluyen tu nombre y tu email.',
+                dura: 'Hasta que salgas de la cuenta o haya una versión nueva',
+            },
+            {
                 nombre: 'calcular.aviso-cookies',
                 para: 'Que ya leíste el aviso de cookies, para no volver a mostrártelo.',
                 dura: 'Hasta que borres los datos del navegador',

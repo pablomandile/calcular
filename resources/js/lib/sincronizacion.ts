@@ -212,6 +212,23 @@ export async function limpiarDatosLocales(): Promise<void> {
     guardarPendientes({ sucios: [], borrados: [], vaciar: false });
     almacenLocal.guardar(CLAVE_USUARIO, '');
     await reemplazarHistorial([]);
+
+    // Las pantallas guardadas para usar sin conexión tienen el nombre y el
+    // email de la cuenta: se borran (ver public/sw.js).
+    try {
+        const nombres = await caches.keys();
+        await Promise.all(
+            nombres
+                .filter(
+                    (n) =>
+                        n.startsWith('calcular-paginas') ||
+                        n.startsWith('calcular-inertia'),
+                )
+                .map((n) => caches.delete(n)),
+        );
+    } catch {
+        // Sin Cache Storage (contexto sin HTTPS): no hay nada guardado.
+    }
 }
 
 registrarOyentes({

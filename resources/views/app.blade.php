@@ -32,9 +32,42 @@
             }
         </style>
 
-        <link rel="icon" href="/favicon.ico" sizes="any">
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+        {{-- PWA. Al cambiar un ícono: ?v= acá y en el manifest, y CACHE en sw.js. --}}
+        <link rel="manifest" href="/manifest.webmanifest">
+        <link rel="icon" href="/favicon.ico?v=1" sizes="32x32">
+        <link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        <meta name="apple-mobile-web-app-title" content="CalculAR">
+
+        {{--
+            Chrome dispara beforeinstallprompt apenas carga la página, antes de
+            que monte Vue: se captura acá y el botón "Instalar app" lo lee de
+            window.__pwaInstall (ver usePwaInstall.ts).
+        --}}
+        <script>
+            (function () {
+                window.__pwaInstall = { prompt: null, installed: false };
+                window.addEventListener('beforeinstallprompt', function (e) {
+                    e.preventDefault();
+                    window.__pwaInstall.prompt = e;
+                    window.dispatchEvent(new CustomEvent('pwa:installable'));
+                });
+                window.addEventListener('appinstalled', function () {
+                    window.__pwaInstall.prompt = null;
+                    window.__pwaInstall.installed = true;
+                    window.dispatchEvent(new CustomEvent('pwa:installed'));
+                });
+                if ('serviceWorker' in navigator) {
+                    window.addEventListener('load', function () {
+                        // ?v=: una URL nueva saltea una copia vieja en el CDN.
+                        navigator.serviceWorker.register('/sw.js?v=1').catch(function () {});
+                    });
+                }
+            })();
+        </script>
 
         @fonts
 

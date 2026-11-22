@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import BotonInstalar from '@/components/calcular/BotonInstalar.vue';
 import TarjetaCalculadora from '@/components/calcular/TarjetaCalculadora.vue';
 import type { Seccion } from '@/lib/catalogo';
 import { deSeccion, titulosSeccion } from '@/lib/catalogo';
@@ -19,6 +20,8 @@ const secciones: Seccion[] = ['basicas', 'finanzas', 'fechas'];
             feriados argentinos. Todo en un lugar, con historial de cada cuenta.
         </p>
     </section>
+
+    <BotonInstalar class="mb-8" />
 
     <section v-for="s in secciones" :key="s" class="mb-8">
         <h2

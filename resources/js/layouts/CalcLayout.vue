@@ -3,6 +3,7 @@ import { Link, usePage } from '@inertiajs/vue3';
 import AvisoCookies from '@/components/AvisoCookies.vue';
 import { LogIn, Moon, Sun } from '@lucide/vue';
 import { computed } from 'vue';
+import BotonInstalar from '@/components/calcular/BotonInstalar.vue';
 import LogoCalculAR from '@/components/calcular/LogoCalculAR.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -87,6 +88,7 @@ function alternarTema() {
                 </nav>
 
                 <div class="ml-auto flex items-center gap-1">
+                    <BotonInstalar variante="icono" />
                     <Button
                         variant="ghost"
                         size="icon"
