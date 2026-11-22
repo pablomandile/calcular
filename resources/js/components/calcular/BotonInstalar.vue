@@ -64,7 +64,7 @@ async function alTocar() {
             class="flex items-center gap-4 rounded-2xl border border-celeste/60 bg-celeste-suave p-4"
         >
             <img
-                src="/iconos/icon-192.png?v=1"
+                src="/iconos/icon-192.png?v=2"
                 alt=""
                 class="size-12 shrink-0 rounded-xl"
                 width="48"

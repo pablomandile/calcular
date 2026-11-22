@@ -19,7 +19,11 @@
         <meta property="og:title" content="{{ $tituloSeo }}">
         <meta property="og:description" content="{{ $seo['descripcion'] }}">
         <meta property="og:url" content="{{ url()->current() }}">
-        <meta property="og:image" content="{{ url('/iconos/icon-512.png?v=1') }}">
+        <meta property="og:image" content="{{ url('/img/compartir.jpg?v=1') }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:image:alt" content="Logo de CalculAR">
+        <meta name="twitter:card" content="summary_large_image">
         <meta name="theme-color" content="#2a6aa3">
 
         {{-- Inline script to detect system dark mode preference and apply it immediately --}}
@@ -50,9 +54,9 @@
 
         {{-- PWA. Al cambiar un ícono: ?v= acá y en el manifest, y CACHE en sw.js. --}}
         <link rel="manifest" href="/manifest.webmanifest">
-        <link rel="icon" href="/favicon.ico?v=1" sizes="32x32">
-        <link rel="icon" href="/favicon.svg?v=1" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=1">
+        <link rel="icon" href="/favicon.ico?v=2" sizes="32x32">
+        <link rel="icon" href="/iconos/icon-192.png?v=2" type="image/png" sizes="192x192">
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="default">

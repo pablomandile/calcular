@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import LogoCalculAR from '@/components/calcular/LogoCalculAR.vue';
 import { home } from '@/routes';
 
 defineProps<{
@@ -20,7 +19,25 @@ defineProps<{
                         :href="home()"
                         class="flex flex-col items-center gap-2 font-medium"
                     >
-                        <LogoCalculAR class="mb-1" />
+                        <!--
+                            El logo con el nombre (resources/marca, generado con
+                            npm run generar:iconos). En oscuro, la variante con
+                            "Calcul" en blanco: el azul marino no se lee.
+                        -->
+                        <img
+                            src="/img/logo-calcular.webp?v=1"
+                            alt="CalculAR"
+                            width="480"
+                            height="461"
+                            class="h-auto w-40 dark:hidden"
+                        />
+                        <img
+                            src="/img/logo-calcular-oscuro.webp?v=1"
+                            alt="CalculAR"
+                            width="480"
+                            height="461"
+                            class="hidden h-auto w-40 dark:block"
+                        />
                         <span class="sr-only">{{ title }}</span>
                     </Link>
                     <div class="space-y-2 text-center">

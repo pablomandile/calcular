@@ -15,7 +15,7 @@
  * Al cerrar la sesión la app borra calcular-paginas y calcular-inertia: tienen
  * el nombre y el email de la cuenta en los datos de la página.
  */
-const VERSION = 1;
+const VERSION = 2;
 const CACHE_APP = `calcular-app-v${VERSION}`;
 const CACHE_PAGINAS = `calcular-paginas-v${VERSION}`;
 const CACHE_INERTIA = `calcular-inertia-v${VERSION}`;
@@ -51,11 +51,7 @@ const PUBLICAS = [
     '/cookies',
 ];
 
-const ARCHIVOS_FIJOS = [
-    '/manifest.webmanifest',
-    '/favicon.svg',
-    '/iconos/icon-192.png?v=1',
-];
+const ARCHIVOS_FIJOS = ['/manifest.webmanifest', '/iconos/icon-192.png?v=2'];
 
 /** Todos los archivos del build, sacados de los manifest de Vite. */
 async function archivosDelBuild() {
