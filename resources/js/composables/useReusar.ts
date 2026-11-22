@@ -1,3 +1,4 @@
+import { router } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
 import type { Calculo, TipoCalculo } from '@/composables/useHistorial';
 import { cargarHistorial, useHistorial } from '@/composables/useHistorial';
@@ -28,7 +29,13 @@ export function useReusar(
             aplicar(calculo.entrada, calculo);
         }
 
+        // Con router.replace la URL limpia queda también en el estado de
+        // Inertia; un replaceState a mano lo pisa Inertia al inicializarse.
         url.searchParams.delete('reusar');
-        window.history.replaceState(window.history.state, '', url.toString());
+        router.replace({
+            url: url.pathname + url.search + url.hash,
+            preserveScroll: true,
+            preserveState: true,
+        });
     });
 }

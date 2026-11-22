@@ -50,6 +50,8 @@
     --color-sol: var(--sol);
     --color-sol-suave: var(--sol-suave);
     --color-exito: var(--exito);
+    --color-serie-1: var(--serie-1);
+    --color-serie-2: var(--serie-2);
 
     --color-chart-1: var(--chart-1);
     --color-chart-2: var(--chart-2);
@@ -80,6 +82,9 @@
     --sol: #f6b40e;
     --sol-suave: #fef6e0;
     --exito: #15803d;
+    /* Series de gráficos, validadas con el validador de dataviz (CVD y contraste). */
+    --serie-1: #2a6aa3;
+    --serie-2: #c48100;
 
     --background: #f7f9fc;
     --foreground: #16202c;
@@ -123,6 +128,8 @@
     --sol: #f6b40e;
     --sol-suave: #2b2410;
     --exito: #4ade80;
+    --serie-1: #4f95d6;
+    --serie-2: #c08700;
 
     --background: #0d141c;
     --foreground: #e8eef5;
