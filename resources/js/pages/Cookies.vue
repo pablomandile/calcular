@@ -79,6 +79,11 @@ const GRUPOS: Grupo[] = [
                 dura: 'Hasta que borres los datos del navegador',
             },
             {
+                nombre: 'calcular.indices.…',
+                para: 'La serie del IPC, el CER o la UVA que consultaste, para que las calculadoras de inflación funcionen sin conexión.',
+                dura: 'Hasta que borres los datos del navegador',
+            },
+            {
                 nombre: 'calcular.sync.pendientes · calcular.sync.usuario',
                 para: 'Con cuenta: los cambios del historial que todavía no llegaron a tu cuenta (por ejemplo, sin señal) y de qué cuenta es la copia.',
                 dura: 'Hasta que se sincronizan o salís de la cuenta',

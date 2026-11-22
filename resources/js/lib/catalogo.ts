@@ -6,11 +6,17 @@ import {
     CalendarDays,
     CalendarPlus,
     CalendarRange,
+    ChartLine,
+    ChartNoAxesCombined,
+    Coins,
     FlaskConical,
     History,
+    Home,
     Landmark,
     Percent,
     PiggyBank,
+    ReceiptText,
+    Sigma,
     TrendingUp,
 } from '@lucide/vue';
 
@@ -19,7 +25,7 @@ import {
  * páginas índice de cada sección: agregar una calculadora es agregarla acá y
  * crear su ruta en routes/web.php.
  */
-export type Seccion = 'basicas' | 'finanzas' | 'fechas';
+export type Seccion = 'basicas' | 'finanzas' | 'inflacion' | 'fechas';
 
 export type Calculadora = {
     clave: string;
@@ -84,6 +90,58 @@ export const calculadoras: Calculadora[] = [
         seccion: 'finanzas',
     },
     {
+        clave: 'inflacion-ipc',
+        titulo: 'Actualizar por IPC',
+        descripcion:
+            'Llevá un monto de un mes a otro con el IPC oficial del INDEC.',
+        href: '/inflacion/ipc',
+        icono: ReceiptText,
+        seccion: 'inflacion',
+    },
+    {
+        clave: 'inflacion-acumulada',
+        titulo: 'Inflación acumulada',
+        descripcion:
+            'Cuánto suma una inflación mensual pareja en varios meses.',
+        href: '/inflacion/acumulada',
+        icono: Sigma,
+        seccion: 'inflacion',
+    },
+    {
+        clave: 'actualizar-monto',
+        titulo: 'Actualizar un monto',
+        descripcion:
+            'Un monto a valores de hoy con el % de inflación del período.',
+        href: '/inflacion/actualizar-monto',
+        icono: Coins,
+        seccion: 'inflacion',
+    },
+    {
+        clave: 'serie-inflacion',
+        titulo: 'Inflación mensual',
+        descripcion:
+            'La serie del INDEC mes a mes: mensual, interanual y acumulada.',
+        href: '/inflacion/serie-mensual',
+        icono: ChartLine,
+        seccion: 'inflacion',
+    },
+    {
+        clave: 'cer',
+        titulo: 'Índice CER',
+        descripcion: 'Valores diarios del CER del BCRA y su variación.',
+        href: '/inflacion/cer',
+        icono: ChartNoAxesCombined,
+        seccion: 'inflacion',
+    },
+    {
+        clave: 'uva',
+        titulo: 'Valor de la UVA',
+        descripcion: 'Valores diarios de la UVA del BCRA y su variación.',
+        href: '/inflacion/uva',
+        icono: Home,
+        seccion: 'inflacion',
+    },
+    {
         clave: 'dias-entre-fechas',
         titulo: 'Días entre fechas',
         descripcion:
@@ -122,6 +180,7 @@ export const calculadoras: Calculadora[] = [
 export const titulosSeccion: Record<Seccion, string> = {
     basicas: 'Calculadoras',
     finanzas: 'Finanzas',
+    inflacion: 'Inflación',
     fechas: 'Fechas',
 };
 
@@ -140,6 +199,11 @@ export type ItemNav = {
     icono: LucideIcon;
     /** Rutas que marcan este ítem como activo (por prefijo). */
     activoEn: string[];
+    /**
+     * Solo desde xl en el menú de escritorio: entre lg y xl, con letra
+     * grande, no entran todos.
+     */
+    soloXl?: boolean;
 };
 
 export const navegacion: ItemNav[] = [
@@ -159,7 +223,8 @@ export const navegacion: ItemNav[] = [
         titulo: 'Finanzas',
         href: '/finanzas',
         icono: TrendingUp,
-        activoEn: ['/finanzas', '/porcentajes'],
+        // En el celular, Inflación se abre desde Finanzas.
+        activoEn: ['/finanzas', '/porcentajes', '/inflacion'],
     },
     {
         titulo: 'Fechas',

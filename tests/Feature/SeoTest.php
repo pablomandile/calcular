@@ -13,7 +13,7 @@ class SeoTest extends TestCase
             ->filter(fn ($r) => in_array('GET', $r->methods(), true)
                 && ! collect($r->gatherMiddleware())->contains(fn ($m) => $m === 'auth' || $m === 'guest' || str_starts_with($m, 'auth:')))
             ->map(fn ($r) => $r->getName())
-            ->filter(fn ($n) => $n !== null && ! preg_match('/^(feriados|sitemap|robots|storage\.|well-known|login|register|password\.|two-factor|passkey|verification|google|historial\.|terminos\.aceptar)/', $n))
+            ->filter(fn ($n) => $n !== null && ! preg_match('/^(feriados|indices|sitemap|robots|storage\.|well-known|login|register|password\.|two-factor|passkey|verification|google|historial\.|terminos\.aceptar)/', $n))
             ->values();
 
         $this->assertNotEmpty($publicas);

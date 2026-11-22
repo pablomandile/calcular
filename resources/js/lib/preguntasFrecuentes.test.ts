@@ -6,7 +6,9 @@ import {
     diasEntre,
     sumarRestar,
 } from './calc/fechas';
-import { preguntasFechas } from './preguntasFrecuentes';
+import { inflacionAcumulada } from './calc/inflacion';
+import { D } from './calc/numero';
+import { preguntasFechas, preguntasInflacion } from './preguntasFrecuentes';
 
 /** Todo el texto de una pregunta, para comprobar que el ejemplo sigue ahí. */
 function texto(inicio: string): string {
@@ -82,5 +84,26 @@ describe('preguntas frecuentes de fechas: los ejemplos son ciertos', () => {
         preguntasFechas.forEach((p) =>
             expect(p.respuesta.length).toBeGreaterThan(0),
         );
+    });
+});
+
+describe('preguntas frecuentes de inflación: los ejemplos son ciertos', () => {
+    const texto = preguntasInflacion
+        .find((p) => p.pregunta.startsWith('¿Por qué no se suma'))!
+        .respuesta.flat()
+        .join(' ');
+
+    it('2 % y 3 % dan 5,06 %', () => {
+        expect(texto).toContain('5,06 %');
+        expect(new D('1.02').times('1.03').minus(1).toNumber()).toBe(0.0506);
+    });
+
+    it('5 % por mes durante un año da 79,59 %', () => {
+        expect(texto).toContain('79,59 %');
+        expect(
+            inflacionAcumulada(new D('0.05'), 12)
+                .acumulada.toDecimalPlaces(4)
+                .toNumber(),
+        ).toBe(0.7959);
     });
 });

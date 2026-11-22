@@ -24,7 +24,7 @@ const page = usePage();
 const usuario = computed(() => page.props.auth?.user ?? null);
 const { items, cargado, vaciar } = useHistorial();
 
-type Filtro = 'todos' | 'basicas' | 'finanzas' | 'fechas';
+type Filtro = 'todos' | 'basicas' | 'finanzas' | 'inflacion' | 'fechas';
 const filtros: { valor: Filtro; titulo: string; tipos: TipoCalculo[] }[] = [
     { valor: 'todos', titulo: 'Todos', tipos: [] },
     {
@@ -36,6 +36,11 @@ const filtros: { valor: Filtro; titulo: string; tipos: TipoCalculo[] }[] = [
         valor: 'finanzas',
         titulo: 'Finanzas',
         tipos: ['tna-tea', 'plazo-fijo', 'interes-compuesto', 'porcentajes'],
+    },
+    {
+        valor: 'inflacion',
+        titulo: 'Inflación',
+        tipos: ['inflacion-ipc', 'inflacion-acumulada', 'actualizar-monto'],
     },
     {
         valor: 'fechas',

@@ -81,3 +81,52 @@ export const preguntasFechas: PreguntaFrecuente[] = [
         ],
     },
 ];
+
+export const preguntasInflacion: PreguntaFrecuente[] = [
+    {
+        pregunta: '¿Por qué no se suma la inflación de cada mes?',
+        respuesta: [
+            'Porque cada mes los precios suben sobre lo que ya habían subido: los porcentajes se multiplican. Un 2 % y un 3 % dan 5,06 %, no 5 %, y 5 % por mes durante un año da 79,59 %, no 60 %.',
+        ],
+    },
+    {
+        pregunta: '¿De dónde salen los datos?',
+        respuesta: [
+            'El IPC es el Índice de Precios al Consumidor Nacional, nivel general, que publica el INDEC (lo tomamos de la API de Series de Tiempo del Estado). El CER y la UVA son del Banco Central. Se actualizan solos todos los días.',
+        ],
+    },
+    {
+        pregunta: '¿Desde cuándo hay datos?',
+        respuesta: [
+            [
+                'IPC: desde diciembre de 2016, cuando empieza la serie oficial actual (base diciembre 2016 = 100).',
+                'CER: desde el 2 de febrero de 2002.',
+                'UVA: desde el 31 de marzo de 2016.',
+            ],
+        ],
+    },
+    {
+        pregunta: '¿Cuándo aparece la inflación del último mes?',
+        respuesta: [
+            'El INDEC publica la inflación de cada mes a mediados del mes siguiente. CalculAR la incorpora dentro de las 24 horas. Si el INDEC corrige un mes anterior, también se actualiza.',
+        ],
+    },
+    {
+        pregunta: '¿Qué diferencia hay entre el IPC, el CER y la UVA?',
+        respuesta: [
+            'El IPC mide cuánto suben los precios cada mes. El CER se arma con el IPC (con unos dos meses de rezago) y lo reparte día a día, para ajustar bonos y préstamos. La UVA es una unidad en pesos que sigue al CER y se usa en créditos hipotecarios y plazos fijos UVA.',
+        ],
+    },
+    {
+        pregunta: '¿Sirve para actualizar un alquiler, una deuda o un reclamo?',
+        respuesta: [
+            'Como referencia, sí. Pero cada contrato o sentencia dice qué índice usar y entre qué fechas (puede ser el ICL, el CER, una tasa o el IPC con otro criterio), así que el resultado oficial puede ser distinto.',
+        ],
+    },
+    {
+        pregunta: '¿Funciona sin conexión?',
+        respuesta: [
+            'Inflación acumulada y actualizar un monto, sí, siempre. Las que usan datos oficiales funcionan con lo último que bajaste en ese dispositivo, y te avisan cuando están usando esa copia.',
+        ],
+    },
+];

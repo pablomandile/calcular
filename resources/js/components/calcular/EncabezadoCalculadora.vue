@@ -19,8 +19,8 @@ const volver = computed(() => {
         return { href: '/finanzas', titulo: titulosSeccion.finanzas };
     }
 
-    if (seccion === 'fechas') {
-        return { href: '/fechas', titulo: titulosSeccion.fechas };
+    if (seccion === 'fechas' || seccion === 'inflacion') {
+        return { href: `/${seccion}`, titulo: titulosSeccion[seccion] };
     }
 
     return null;

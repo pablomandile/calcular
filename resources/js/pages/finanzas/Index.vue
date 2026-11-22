@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import TarjetaCalculadora from '@/components/calcular/TarjetaCalculadora.vue';
 import { buscarCalculadora, deSeccion } from '@/lib/catalogo';
 
@@ -19,5 +19,22 @@ const porcentajes = buscarCalculadora('porcentajes');
             :calculadora="c"
         />
         <TarjetaCalculadora v-if="porcentajes" :calculadora="porcentajes" />
+    </div>
+
+    <h2 class="mt-10 mb-1 text-lg font-semibold">Inflación</h2>
+    <p class="mb-4 text-sm text-muted-foreground">
+        IPC del INDEC, inflación acumulada, CER y UVA.
+        <Link
+            href="/inflacion"
+            class="text-primary underline underline-offset-2"
+            >Ver todo</Link
+        >
+    </p>
+    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <TarjetaCalculadora
+            v-for="c in deSeccion('inflacion')"
+            :key="c.clave"
+            :calculadora="c"
+        />
     </div>
 </template>

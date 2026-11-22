@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
 import AvisoCookies from '@/components/AvisoCookies.vue';
-import { LogIn } from '@lucide/vue';
+import { ChartLine, LogIn } from '@lucide/vue';
 import { computed } from 'vue';
 import BotonInstalar from '@/components/calcular/BotonInstalar.vue';
 import LogoCalculAR from '@/components/calcular/LogoCalculAR.vue';
@@ -37,6 +37,14 @@ const navEscritorio: ItemNav[] = [
         href: '/porcentajes',
         icono: navegacion[2].icono,
         activoEn: ['/porcentajes'],
+        // Entre lg y xl se llega desde Finanzas.
+        soloXl: true,
+    },
+    {
+        titulo: 'Inflación',
+        href: '/inflacion',
+        icono: ChartLine,
+        activoEn: ['/inflacion'],
     },
     ...navegacion.slice(3),
 ];
@@ -74,6 +82,7 @@ function estaActivo(item: ItemNav): boolean {
                             cn(
                                 'rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground',
                                 estaActivo(item) && 'bg-accent text-foreground',
+                                item.soloXl && 'hidden xl:block',
                             )
                         "
                         :aria-current="estaActivo(item) ? 'page' : undefined"

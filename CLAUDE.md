@@ -85,9 +85,28 @@ ahí: una clave nueva sin declarar rompe la suite. Si algún día entra algo no 
 - Tamaño de letra (`App\Enums\TamanioTexto`): Pequeña/Normal/Grande en % sobre `<html>`,
   escrito por el servidor; cookie `tamanio_texto` + columna en `users`. El cambio va por
   `fetch` y no por visita de Inertia: recargar borraría la cuenta en la calculadora.
-- El layout cambia de barra inferior a menú de escritorio en `lg`.
+- El layout cambia de barra inferior a menú de escritorio en `lg`. Inflación no está en
+  la barra inferior (se llega desde Finanzas e Inicio); Porcentajes aparece en el menú
+  de escritorio recién en `xl` (con letra Grande no entran todos a 1024 px).
 - Las teclas de las calculadoras toman su alto de `--alto-tecla` (con `100dvh`): el
   teclado entra sin scrollear desde 360×740 (con letra Grande en 320×640, se scrollea).
+
+## Inflación (IPC, CER, UVA)
+
+- Tabla `indices` (`App\Enums\SerieIndice`): se guarda el **número índice**, nunca el
+  porcentaje; el coeficiente entre dos fechas es el cociente (sin redondeos encadenados).
+- IPC Nacional nivel general del INDEC por la API de Series de Tiempo de datos.gob.ar
+  (base dic-2016 = 100, desde 2016-12). CER (30) y UVA (31) por la API v4 del BCRA,
+  paginada de a 1000 y con el bundle de `composer/ca-bundle` (el BCRA no manda la
+  cadena completa). Mismo esquema que AlquilerFacil.
+- `indices:actualizar` corre todos los días 07:17 (Argentina) y vuelve a pedir los
+  últimos 3 meses / 10 días para tomar las revisiones. `GET /api/indices/{serie}` da la
+  serie entera compacta y la trae en el momento si la tabla está vacía.
+- El navegador guarda cada serie (`calcular.indices.…`) para usarla sin conexión.
+- Las cuentas están en `lib/calc/inflacion.ts`; CER y UVA son la misma pantalla
+  (`SerieDiaria.vue`) con la prop `serie`.
+- Los cron van con `Schedule::call`, no `Schedule::command` (proc_open falla en el
+  hosting a las horas en punto), en minutos que no son en punto y con timezone.
 
 ## Feriados
 

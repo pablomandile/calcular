@@ -12,7 +12,7 @@ return [
 
     'home' => [
         'titulo' => 'CalculAR · Calculadoras para Argentina',
-        'descripcion' => 'Calculadora, científica, TNA y TEA, plazo fijo, interés compuesto, porcentajes y días hábiles con feriados argentinos. Gratis y sin cuenta.',
+        'descripcion' => 'Calculadora, científica, TNA y TEA, plazo fijo, interés compuesto, porcentajes, inflación por IPC y días hábiles con feriados argentinos. Gratis y sin cuenta.',
     ],
     'calculadora' => [
         'titulo' => 'Calculadora online con historial',
@@ -41,6 +41,34 @@ return [
     'finanzas.interes-compuesto' => [
         'titulo' => 'Calculadora de interés compuesto',
         'descripcion' => 'Cómo crece un capital con reinversión y aportes periódicos, año por año y con gráfico.',
+    ],
+    'inflacion.index' => [
+        'titulo' => 'Calculadoras de inflación',
+        'descripcion' => 'Inflación acumulada, actualizar un monto por IPC del INDEC, la serie de inflación mensual e interanual, y los índices CER y UVA del BCRA.',
+    ],
+    'inflacion.acumulada' => [
+        'titulo' => 'Calculadora de inflación acumulada',
+        'descripcion' => 'Cuánto suma una inflación mensual constante en varios meses, y cuánto vale un monto al final. Con la fórmula explicada.',
+    ],
+    'inflacion.actualizar-monto' => [
+        'titulo' => 'Actualizar un monto por inflación',
+        'descripcion' => 'Llevá un monto a valores de hoy con el porcentaje de inflación del período, y mirá cuánto poder de compra se perdió.',
+    ],
+    'inflacion.ipc' => [
+        'titulo' => 'Calculadora de inflación por IPC (INDEC)',
+        'descripcion' => 'Actualizá un monto entre dos meses con el IPC Nacional del INDEC: coeficiente, inflación del período y monto equivalente.',
+    ],
+    'inflacion.serie-mensual' => [
+        'titulo' => 'Inflación mensual e interanual en Argentina',
+        'descripcion' => 'La serie del IPC del INDEC mes a mes: inflación mensual, interanual y acumulada del período, con gráfico y descarga en CSV.',
+    ],
+    'inflacion.cer' => [
+        'titulo' => 'Índice CER: valores diarios',
+        'descripcion' => 'La serie diaria del CER del BCRA, con su variación en el período que elijas, gráfico y descarga en CSV.',
+    ],
+    'inflacion.uva' => [
+        'titulo' => 'Valor de la UVA hoy y su historia',
+        'descripcion' => 'La serie diaria de la UVA del BCRA, con su variación en el período que elijas, gráfico y descarga en CSV.',
     ],
     'fechas.index' => [
         'titulo' => 'Calculadoras de fechas',

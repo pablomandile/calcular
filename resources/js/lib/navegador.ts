@@ -67,3 +67,22 @@ export const almacenLocal = {
         }
     },
 };
+
+/**
+ * Baja un texto como archivo (por ejemplo, un CSV). Sin servidor: se arma en
+ * el navegador, así también anda sin conexión.
+ */
+export function descargarArchivo(
+    nombre: string,
+    contenido: string,
+    tipo = 'text/csv;charset=utf-8',
+): void {
+    const url = URL.createObjectURL(new Blob([contenido], { type: tipo }));
+    const enlace = document.createElement('a');
+    enlace.href = url;
+    enlace.download = nombre;
+    document.body.appendChild(enlace);
+    enlace.click();
+    enlace.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}

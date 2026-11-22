@@ -5,7 +5,7 @@ import TarjetaCalculadora from '@/components/calcular/TarjetaCalculadora.vue';
 import type { Seccion } from '@/lib/catalogo';
 import { deSeccion, titulosSeccion } from '@/lib/catalogo';
 
-const secciones: Seccion[] = ['basicas', 'finanzas', 'fechas'];
+const secciones: Seccion[] = ['basicas', 'finanzas', 'inflacion', 'fechas'];
 </script>
 
 <template>

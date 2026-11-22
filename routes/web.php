@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\FeriadoController;
 use App\Http\Controllers\HistorialController;
+use App\Http\Controllers\IndiceController;
 use App\Http\Controllers\Legales\LegalesController;
 use App\Http\Controllers\Settings\DescargaDeDatosController;
 use App\Http\Controllers\TamanioTextoController;
@@ -32,6 +33,22 @@ Route::prefix('fechas')->name('fechas.')->group(function () {
     Route::inertia('sumar-restar', 'fechas/SumarRestar')->name('sumar-restar');
     Route::inertia('edad', 'fechas/Edad')->name('edad');
 });
+
+Route::prefix('inflacion')->name('inflacion.')->group(function () {
+    Route::inertia('/', 'inflacion/Index')->name('index');
+    Route::inertia('acumulada', 'inflacion/Acumulada')->name('acumulada');
+    Route::inertia('actualizar-monto', 'inflacion/ActualizarMonto')->name('actualizar-monto');
+    Route::inertia('ipc', 'inflacion/Ipc')->name('ipc');
+    Route::inertia('serie-mensual', 'inflacion/SerieMensual')->name('serie-mensual');
+    // CER y UVA son la misma pantalla con otra serie.
+    Route::inertia('cer', 'inflacion/SerieDiaria', ['serie' => 'cer'])->name('cer');
+    Route::inertia('uva', 'inflacion/SerieDiaria', ['serie' => 'uva'])->name('uva');
+});
+
+Route::get('api/indices/{serie}', [IndiceController::class, 'show'])
+    ->whereIn('serie', ['ipc', 'cer', 'uva'])
+    ->middleware('throttle:60,1')
+    ->name('indices');
 
 Route::get('api/feriados/{anio}', [FeriadoController::class, 'index'])
     ->whereNumber('anio')
