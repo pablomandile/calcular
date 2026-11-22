@@ -25,6 +25,8 @@ class CalculadorasTest extends TestCase
             'tna-tea' => ['/finanzas/tna-tea', 'finanzas/TnaTea'],
             'plazo-fijo' => ['/finanzas/plazo-fijo', 'finanzas/PlazoFijo'],
             'interes-compuesto' => ['/finanzas/interes-compuesto', 'finanzas/InteresCompuesto'],
+            'interes-en-cuotas' => ['/finanzas/interes-en-cuotas', 'finanzas/InteresEnCuotas'],
+            'contado-vs-cuotas' => ['/finanzas/contado-vs-cuotas', 'finanzas/ContadoVsCuotas'],
             'inflacion' => ['/inflacion', 'inflacion/Index'],
             'inflacion-ipc' => ['/inflacion/ipc', 'inflacion/Ipc'],
             'inflacion-acumulada' => ['/inflacion/acumulada', 'inflacion/Acumulada'],

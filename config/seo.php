@@ -28,7 +28,7 @@ return [
     ],
     'finanzas.index' => [
         'titulo' => 'Calculadoras financieras',
-        'descripcion' => 'TNA y TEA, plazo fijo, interés compuesto y porcentajes, con las fórmulas explicadas.',
+        'descripcion' => 'TNA y TEA, plazo fijo, interés compuesto, interés en cuotas, contado o cuotas y porcentajes, con las fórmulas explicadas.',
     ],
     'finanzas.tna-tea' => [
         'titulo' => 'Calculadora de TNA a TEA (y TEA a TNA)',
@@ -41,6 +41,14 @@ return [
     'finanzas.interes-compuesto' => [
         'titulo' => 'Calculadora de interés compuesto',
         'descripcion' => 'Cómo crece un capital con reinversión y aportes periódicos, año por año y con gráfico.',
+    ],
+    'finanzas.interes-en-cuotas' => [
+        'titulo' => 'Calculadora de interés en cuotas',
+        'descripcion' => 'Descubrí la tasa que pagás de verdad en una compra en cuotas fijas: tasa mensual, TNA, TEA y recargo, con la primera cuota en el momento o a 30 días.',
+    ],
+    'finanzas.contado-vs-cuotas' => [
+        'titulo' => 'Contado o cuotas: qué conviene',
+        'descripcion' => 'Compará el precio de contado con un plan en cuotas según lo que rinde tu plata y la inflación esperada: valor presente, tasa del plan y ahorro.',
     ],
     'inflacion.index' => [
         'titulo' => 'Calculadoras de inflación',

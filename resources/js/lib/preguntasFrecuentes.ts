@@ -130,3 +130,44 @@ export const preguntasInflacion: PreguntaFrecuente[] = [
         ],
     },
 ];
+
+export const preguntasFinanzas: PreguntaFrecuente[] = [
+    {
+        pregunta: '¿Qué diferencia hay entre la TNA y la TEA?',
+        respuesta: [
+            'La TNA (tasa nominal anual) es la que se anuncia, pero no incluye la reinversión de los intereses. La TEA (tasa efectiva anual) sí: es lo que rinde o cuesta de verdad en un año. Un 60 % TNA con capitalización mensual es un 79,59 % TEA.',
+            'Para comparar dos opciones, usá siempre la TEA.',
+        ],
+    },
+    {
+        pregunta: '¿Por qué el recargo de las cuotas no es la tasa de interés?',
+        respuesta: [
+            'Porque no tiene en cuenta cuándo pagás. Pagar $ 1.320.000 en 12 cuotas por algo de $ 1.000.000 es un recargo de 32 %, pero la tasa real es 4,55 % mensual: una TEA de 70,6 %. La calculadora de interés en cuotas la saca por vos.',
+        ],
+    },
+    {
+        pregunta: '¿Conviene pagar de contado o en cuotas?',
+        respuesta: [
+            'Depende de cuánto te rinde la plata que no gastás. Si la tasa del plan en cuotas es menor que lo que ganás con un plazo fijo o una cuenta remunerada, conviene en cuotas; si es mayor, el contado. Con cuotas sin interés de verdad y algo de rendimiento, casi siempre conviene en cuotas.',
+            'Mirar solo si el total de las cuotas se parece al contado no alcanza: importa cuándo pagás cada peso.',
+        ],
+    },
+    {
+        pregunta: '¿La tasa de las cuotas es lo mismo que el CFT?',
+        respuesta: [
+            'Es lo mismo si todo lo que pagás está dentro de la cuota. El costo financiero total (CFT), que los bancos y comercios tienen que informar, suma además el IVA sobre los intereses, seguros, sellados y comisiones. Si pagás algo de eso aparte, cargalo como costo en contado vs. cuotas.',
+        ],
+    },
+    {
+        pregunta: '¿Cómo sé si una inversión le ganó a la inflación?',
+        respuesta: [
+            'Comparando el rendimiento con la inflación del mismo período: rendimiento real = (1 + rendimiento) / (1 + inflación) − 1. Si te rindió 30 % en un año con 25 % de inflación, ganaste 4 % de poder de compra, no 5 %. La inflación de cada período la tenés en la sección Inflación.',
+        ],
+    },
+    {
+        pregunta: '¿Reemplazan el asesoramiento de un profesional?',
+        respuesta: [
+            'No. Son calculadoras para entender y comparar. Antes de una decisión importante, revisá el contrato y, si hace falta, consultá a un profesional.',
+        ],
+    },
+];

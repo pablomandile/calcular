@@ -9,6 +9,7 @@ import {
     ChartLine,
     ChartNoAxesCombined,
     Coins,
+    CreditCard,
     FlaskConical,
     History,
     Home,
@@ -16,6 +17,7 @@ import {
     Percent,
     PiggyBank,
     ReceiptText,
+    Scale,
     Sigma,
     TrendingUp,
 } from '@lucide/vue';
@@ -87,6 +89,22 @@ export const calculadoras: Calculadora[] = [
             'Cómo crece un capital con reinversión y aportes periódicos.',
         href: '/finanzas/interes-compuesto',
         icono: PiggyBank,
+        seccion: 'finanzas',
+    },
+    {
+        clave: 'interes-en-cuotas',
+        titulo: 'Interés en cuotas',
+        descripcion: 'Qué tasa pagás de verdad en una compra en cuotas.',
+        href: '/finanzas/interes-en-cuotas',
+        icono: CreditCard,
+        seccion: 'finanzas',
+    },
+    {
+        clave: 'contado-vs-cuotas',
+        titulo: 'Contado vs. cuotas',
+        descripcion: 'Qué conviene según lo que rinde tu plata y la inflación.',
+        href: '/finanzas/contado-vs-cuotas',
+        icono: Scale,
         seccion: 'finanzas',
     },
     {

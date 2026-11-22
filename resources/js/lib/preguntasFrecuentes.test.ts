@@ -8,7 +8,13 @@ import {
 } from './calc/fechas';
 import { inflacionAcumulada } from './calc/inflacion';
 import { D } from './calc/numero';
-import { preguntasFechas, preguntasInflacion } from './preguntasFrecuentes';
+import { interesEnCuotas } from './calc/cuotas';
+import { teaDesdeTna } from './calc/tasas';
+import {
+    preguntasFechas,
+    preguntasFinanzas,
+    preguntasInflacion,
+} from './preguntasFrecuentes';
 
 /** Todo el texto de una pregunta, para comprobar que el ejemplo sigue ahí. */
 function texto(inicio: string): string {
@@ -105,5 +111,41 @@ describe('preguntas frecuentes de inflación: los ejemplos son ciertos', () => {
                 .acumulada.toDecimalPlaces(4)
                 .toNumber(),
         ).toBe(0.7959);
+    });
+});
+
+describe('preguntas frecuentes de finanzas: los ejemplos son ciertos', () => {
+    const texto = (inicio: string) =>
+        preguntasFinanzas
+            .find((p) => p.pregunta.startsWith(inicio))!
+            .respuesta.flat()
+            .join(' ');
+
+    it('60 % TNA mensual es 79,59 % TEA', () => {
+        expect(texto('¿Qué diferencia hay entre la TNA')).toContain('79,59 %');
+        expect(
+            teaDesdeTna(new D('0.6'), 12).toDecimalPlaces(4).toNumber(),
+        ).toBe(0.7959);
+    });
+
+    it('12 cuotas de $ 110.000 por $ 1.000.000: 4,55 % mensual, 70,6 % TEA', () => {
+        expect(texto('¿Por qué el recargo')).toContain('4,55 % mensual');
+        const r = interesEnCuotas(new D(1000000), {
+            cuotas: 12,
+            valorCuota: new D(110000),
+            primeraDias: 30,
+            frecuenciaDias: 30,
+        });
+
+        expect(r.tasaMensual.toDecimalPlaces(4).toNumber()).toBe(0.0455);
+        expect(r.tea.toDecimalPlaces(3).toNumber()).toBe(0.706);
+        expect(r.recargoPorcentaje.toNumber()).toBe(0.32);
+    });
+
+    it('30 % de rendimiento con 25 % de inflación: 4 % real', () => {
+        expect(texto('¿Cómo sé si una inversión')).toContain('ganaste 4 %');
+        expect(
+            new D('1.3').div('1.25').minus(1).toDecimalPlaces(4).toNumber(),
+        ).toBe(0.04);
     });
 });

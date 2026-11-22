@@ -16,6 +16,8 @@ export type TipoCalculo =
     | 'tna-tea'
     | 'plazo-fijo'
     | 'interes-compuesto'
+    | 'interes-en-cuotas'
+    | 'contado-vs-cuotas'
     | 'inflacion-ipc'
     | 'inflacion-acumulada'
     | 'actualizar-monto'

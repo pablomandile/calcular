@@ -143,5 +143,6 @@ export function formatearPorcentaje(
 export function formatearPesos(valor: Dec | number | string): string {
     const d = valor instanceof D ? valor : new D(valor);
 
-    return '$ ' + formatearNumero(d, { maxDecimales: 2, minDecimales: 2 });
+    // Espacio duro: el signo nunca queda en una línea y el número en otra.
+    return '$ ' + formatearNumero(d, { maxDecimales: 2, minDecimales: 2 });
 }

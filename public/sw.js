@@ -32,6 +32,8 @@ const PUBLICAS = [
     '/finanzas/tna-tea',
     '/finanzas/plazo-fijo',
     '/finanzas/interes-compuesto',
+    '/finanzas/interes-en-cuotas',
+    '/finanzas/contado-vs-cuotas',
     '/inflacion',
     '/inflacion/ipc',
     '/inflacion/acumulada',
