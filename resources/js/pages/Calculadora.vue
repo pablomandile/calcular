@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { Copy, Delete, History } from '@lucide/vue';
+import { Copy, Delete, History, SquareRadical } from '@lucide/vue';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 import EncabezadoCalculadora from '@/components/calcular/EncabezadoCalculadora.vue';
+import TeclaCalc from '@/components/calcular/TeclaCalc.vue';
 import { useHistorial } from '@/composables/useHistorial';
 import { useReusar } from '@/composables/useReusar';
 import type { EstadoBasica, Operador } from '@/lib/calc/basica';
@@ -77,18 +78,18 @@ const tamanioNumero = computed(() => {
     }
 
     if (largo > 18) {
-        return 'text-2xl';
-    }
-
-    if (largo > 13) {
         return 'text-3xl';
     }
 
-    if (largo > 10) {
+    if (largo > 13) {
         return 'text-4xl';
     }
 
-    return 'text-5xl';
+    if (largo > 9) {
+        return 'text-5xl';
+    }
+
+    return 'text-6xl';
 });
 
 function calcularIgual() {
@@ -108,9 +109,8 @@ function calcularIgual() {
 type Tecla = {
     etiqueta: string;
     accion: () => void;
-    tipo: 'numero' | 'funcion' | 'operador' | 'igual';
+    tipo: 'numero' | 'operador' | 'igual';
     ariaLabel?: string;
-    clase?: string;
 };
 
 const aplicar = (f: (e: EstadoBasica) => EstadoBasica) => () => {
@@ -133,25 +133,25 @@ const teclas = computed<Tecla[]>(() => [
         ? {
               etiqueta: 'CE',
               accion: aplicar(limpiarEntrada),
-              tipo: 'funcion',
+              tipo: 'numero',
               ariaLabel: 'Borrar el número',
           }
         : {
               etiqueta: 'C',
               accion: aplicar(limpiarTodo),
-              tipo: 'funcion',
+              tipo: 'numero',
               ariaLabel: 'Borrar todo',
           },
     {
         etiqueta: '⌫',
         accion: aplicar(borrar),
-        tipo: 'funcion',
+        tipo: 'numero',
         ariaLabel: 'Borrar el último dígito',
     },
     {
         etiqueta: '%',
         accion: aplicar(porcentaje),
-        tipo: 'funcion',
+        tipo: 'numero',
         ariaLabel: 'Porcentaje',
     },
     op('÷', 'Dividido'),
@@ -192,36 +192,28 @@ const teclasMemoria: Tecla[] = [
     {
         etiqueta: 'MC',
         accion: aplicar(memoriaLimpiar),
-        tipo: 'funcion',
+        tipo: 'numero',
         ariaLabel: 'Borrar la memoria',
     },
     {
         etiqueta: 'MR',
         accion: aplicar(memoriaRecuperar),
-        tipo: 'funcion',
+        tipo: 'numero',
         ariaLabel: 'Recuperar la memoria',
     },
     {
         etiqueta: 'M+',
         accion: aplicar(memoriaSumar),
-        tipo: 'funcion',
+        tipo: 'numero',
         ariaLabel: 'Sumar a la memoria',
     },
     {
         etiqueta: 'M−',
         accion: aplicar(memoriaRestar),
-        tipo: 'funcion',
+        tipo: 'numero',
         ariaLabel: 'Restar de la memoria',
     },
 ];
-
-const estilos: Record<Tecla['tipo'], string> = {
-    numero: 'bg-card text-foreground hover:bg-muted text-2xl',
-    funcion: 'bg-secondary text-foreground hover:bg-muted text-xl',
-    operador:
-        'bg-celeste-suave text-primary hover:bg-celeste/30 text-3xl font-medium',
-    igual: 'bg-primary text-primary-foreground hover:bg-primary/90 text-3xl font-medium',
-};
 
 /** Teclado físico. */
 function alTeclear(ev: KeyboardEvent) {
@@ -292,85 +284,101 @@ function usarDeCinta(valor: unknown) {
 
     <div class="grid items-start gap-6 lg:grid-cols-[minmax(0,26rem)_1fr]">
         <section
-            class="mx-auto w-full max-w-md rounded-2xl border border-border bg-card p-3 shadow-sm sm:p-4"
+            class="-mx-4 -mt-5 bg-calc-fondo px-4 pt-2 pb-4 sm:mx-auto sm:mt-0 sm:w-full sm:max-w-md sm:rounded-3xl sm:border sm:border-border sm:p-5 sm:shadow-sm dark:sm:border-transparent"
             aria-label="Calculadora"
         >
-            <!-- Pantalla -->
-            <div
-                class="mb-3 flex min-h-32 flex-col justify-end rounded-xl bg-muted/60 px-4 py-3 text-right"
-            >
-                <div class="flex items-center justify-between gap-2">
-                    <span
-                        class="text-xs font-semibold text-primary"
-                        :class="hayMemoria ? 'visible' : 'invisible'"
-                        title="Hay un valor en memoria"
-                        >M</span
-                    >
-                    <span
-                        class="numeros min-h-6 truncate text-base text-muted-foreground"
-                        data-test="expresion"
-                    >
-                        {{ textoExpresion }}
-                    </span>
-                </div>
-                <div class="flex items-end justify-end gap-2">
-                    <output
-                        :class="
-                            cn(
-                                'numeros min-w-0 font-semibold tracking-tight break-all',
-                                tamanioNumero,
-                                estado.error && 'text-destructive',
-                            )
-                        "
-                        aria-live="polite"
-                        data-test="pantalla"
-                        >{{ textoPantalla }}</output
-                    >
-                </div>
+            <!-- Barra de íconos -->
+            <div class="flex items-center gap-1 text-calc-pantalla">
+                <Link
+                    href="/historial"
+                    class="flex size-11 items-center justify-center rounded-full hover:bg-calc-num"
+                    aria-label="Historial"
+                >
+                    <History class="size-6" />
+                </Link>
+                <span
+                    class="ml-1 text-sm font-semibold"
+                    :class="hayMemoria ? 'visible' : 'invisible'"
+                    title="Hay un valor en memoria"
+                    >M</span
+                >
+                <Link
+                    href="/cientifica"
+                    class="ml-auto flex size-11 items-center justify-center rounded-full hover:bg-calc-num"
+                    aria-label="Pasar a la científica"
+                >
+                    <SquareRadical class="size-6" />
+                </Link>
+                <button
+                    type="button"
+                    class="flex size-11 items-center justify-center rounded-full hover:bg-calc-num"
+                    aria-label="Copiar el resultado"
+                    @click="copiar"
+                >
+                    <Copy class="size-5" />
+                </button>
             </div>
 
-            <div class="mb-2 grid grid-cols-5 gap-2">
+            <!-- Pantalla -->
+            <div
+                class="flex min-h-28 flex-col justify-end px-2 pt-2 pb-2 text-right sm:min-h-40 sm:pt-4 sm:pb-3"
+            >
+                <span
+                    class="numeros min-h-7 truncate text-lg text-muted-foreground"
+                    data-test="expresion"
+                >
+                    {{ textoExpresion }}
+                </span>
+                <output
+                    :class="
+                        cn(
+                            'numeros min-w-0 font-light tracking-tight break-all text-calc-pantalla',
+                            tamanioNumero,
+                            estado.error && 'text-destructive',
+                        )
+                    "
+                    aria-live="polite"
+                    data-test="pantalla"
+                    >{{ textoPantalla }}</output
+                >
+            </div>
+
+            <!-- Memoria -->
+            <div
+                class="mb-2 grid grid-cols-4 gap-2 border-t border-border/60 pt-2 sm:mb-3"
+            >
                 <button
                     v-for="t in teclasMemoria"
                     :key="t.etiqueta"
                     type="button"
-                    class="h-10 rounded-lg text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                    class="h-9 rounded-full text-sm font-medium text-calc-num-texto/80 transition-colors hover:bg-calc-num hover:text-calc-num-texto"
                     :aria-label="t.ariaLabel"
                     @click="t.accion"
                 >
                     {{ t.etiqueta }}
                 </button>
-                <button
-                    type="button"
-                    class="flex h-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                    aria-label="Copiar el resultado"
-                    @click="copiar"
-                >
-                    <Copy class="size-4" />
-                </button>
             </div>
 
-            <div class="grid grid-cols-4 gap-2">
-                <button
+            <div
+                class="grid grid-cols-4 gap-3 [--alto-tecla:clamp(3rem,calc((100dvh-25rem)/5),5rem)] sm:[--alto-tecla:5rem]"
+            >
+                <TeclaCalc
                     v-for="t in teclas"
                     :key="t.etiqueta"
-                    type="button"
-                    :class="
-                        cn(
-                            'numeros flex h-16 items-center justify-center rounded-xl border border-border/60 shadow-xs transition-colors select-none active:scale-[0.97] sm:h-[4.25rem]',
-                            estilos[t.tipo],
-                        )
-                    "
+                    forma="circulo"
+                    :variante="t.tipo"
                     :aria-label="t.ariaLabel ?? t.etiqueta"
                     :data-tecla="t.etiqueta"
                     @click="t.accion"
                 >
-                    <Delete v-if="t.etiqueta === '⌫'" class="size-6" />
-                    <template v-else>{{ t.etiqueta }}</template>
-                </button>
+                    <Delete v-if="t.etiqueta === '⌫'" class="size-7" />
+                    <span v-else :class="t.tipo !== 'numero' && 'text-4xl'">{{
+                        t.etiqueta
+                    }}</span>
+                </TeclaCalc>
             </div>
             <p
-                class="mt-3 hidden text-center text-xs text-muted-foreground sm:block"
+                class="mt-4 hidden text-center text-xs text-muted-foreground sm:block"
             >
                 También podés usar el teclado: números, + − * /, Enter y Esc.
             </p>

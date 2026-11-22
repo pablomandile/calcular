@@ -29,9 +29,12 @@ const volver = computed(() => {
 
 <template>
     <Head :title="calc?.titulo" />
+    <h1 v-if="calc && compacto" class="sr-only sm:hidden">
+        {{ calc.titulo }}
+    </h1>
     <div
         v-if="calc"
-        :class="compacto ? 'mb-3 sm:mb-5 md:mb-7' : 'mb-5 md:mb-7'"
+        :class="compacto ? 'mb-5 hidden sm:block md:mb-7' : 'mb-5 md:mb-7'"
     >
         <Link
             v-if="volver"
@@ -51,12 +54,7 @@ const volver = computed(() => {
                 {{ calc.titulo }}
             </h1>
         </div>
-        <p
-            :class="[
-                'mt-2 text-muted-foreground',
-                compacto && 'hidden sm:block',
-            ]"
-        >
+        <p class="mt-2 text-muted-foreground">
             {{ calc.descripcion }}
         </p>
     </div>

@@ -53,6 +53,14 @@
     --color-serie-1: var(--serie-1);
     --color-serie-2: var(--serie-2);
 
+    --color-calc-fondo: var(--calc-fondo);
+    --color-calc-num: var(--calc-num);
+    --color-calc-num-texto: var(--calc-num-texto);
+    --color-calc-op: var(--calc-op);
+    --color-calc-op-texto: var(--calc-op-texto);
+    --color-calc-igual: var(--calc-igual);
+    --color-calc-pantalla: var(--calc-pantalla);
+
     --color-chart-1: var(--chart-1);
     --color-chart-2: var(--chart-2);
     --color-chart-3: var(--chart-3);
@@ -85,6 +93,19 @@
     /* Series de gráficos, validadas con el validador de dataviz (CVD y contraste). */
     --serie-1: #2a6aa3;
     --serie-2: #c48100;
+
+    /*
+     * Calculadoras (estilo teclado de celular): números ámbar sobre marrón,
+     * operadores celestes y "=" azul profundo. El celeste de las teclas es
+     * más oscuro que el de bandera para que el texto blanco llegue a 3:1.
+     */
+    --calc-fondo: #ffffff;
+    --calc-num: #fbf1df;
+    --calc-num-texto: #7a4d00;
+    --calc-op: #5a96c4;
+    --calc-op-texto: #ffffff;
+    --calc-igual: #1f5579;
+    --calc-pantalla: #8a5800;
 
     --background: #f7f9fc;
     --foreground: #16202c;
@@ -130,6 +151,14 @@
     --exito: #4ade80;
     --serie-1: #4f95d6;
     --serie-2: #c08700;
+
+    --calc-fondo: #000000;
+    --calc-num: #1d1509;
+    --calc-num-texto: #f3b65c;
+    --calc-op: #5a96c4;
+    --calc-op-texto: #ffffff;
+    --calc-igual: #2b5f80;
+    --calc-pantalla: #f3b65c;
 
     --background: #0d141c;
     --foreground: #e8eef5;

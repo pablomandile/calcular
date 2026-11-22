@@ -24,7 +24,7 @@ export default defineConfig({
                       refresh: true,
                       fonts: [
                           bunny('Inter', {
-                              weights: [400, 500, 600, 700],
+                              weights: [300, 400, 500, 600, 700],
                           }),
                       ],
                   }),

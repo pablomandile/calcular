@@ -120,6 +120,7 @@ export function traducir(expresion: string): string {
         .replace(/π/g, 'pi')
         .replace(/√/g, 'sqrt')
         .replace(/∛/g, 'cbrt')
+        .replace(/%/g, '/100')
         .replace(/,/g, '.')
         .replace(/;/g, ',');
 

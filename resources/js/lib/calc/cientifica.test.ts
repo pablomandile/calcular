@@ -53,6 +53,12 @@ describe('científica', () => {
         expect(valor(calcular('2+3×(4−1'))).toBe('11');
     });
 
+    it('por ciento e inverso', () => {
+        expect(valor(calcular('50%'))).toBe('0,5');
+        expect(valor(calcular('200×10%'))).toBe('20');
+        expect(valor(calcular('4^(−1)'))).toBe('0,25');
+    });
+
     it('usa Ans', () => {
         expect(valor(calcular('Ans×2', 'DEG', '21'))).toBe('42');
     });

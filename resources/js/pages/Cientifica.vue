@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { Copy, Delete, History } from '@lucide/vue';
+import { Calculator, Copy, Delete, History } from '@lucide/vue';
 import { computed, nextTick, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 import EncabezadoCalculadora from '@/components/calcular/EncabezadoCalculadora.vue';
+import TeclaCalc from '@/components/calcular/TeclaCalc.vue';
 import { useHistorial } from '@/composables/useHistorial';
 import { useReusar } from '@/composables/useReusar';
 import type { ModoAngulo } from '@/lib/calc/cientifica';
@@ -74,7 +75,7 @@ async function insertar(texto: string) {
     let actual = expresion.value;
 
     if (resultado.value !== null && actual === '') {
-        if (/^[+−×÷^!]/.test(texto)) {
+        if (/^[+−×÷^!%]/.test(texto)) {
             actual = 'Ans';
         }
     }
@@ -150,8 +151,9 @@ type Tecla = {
     etiqueta: string;
     inserta?: string;
     accion?: () => void;
-    tipo: 'numero' | 'funcion' | 'operador' | 'igual' | 'control';
+    tipo: 'numero' | 'funcion' | 'operador' | 'igual';
     aria?: string;
+    activa?: boolean;
 };
 
 const fn = (etiqueta: string, inserta: string, aria?: string): Tecla => ({
@@ -161,40 +163,63 @@ const fn = (etiqueta: string, inserta: string, aria?: string): Tecla => ({
     aria,
 });
 
+/** Primera o segunda función según "2nd". */
+const dos = (normal: Tecla, segunda: Tecla) =>
+    inversa.value ? segunda : normal;
+
+/**
+ * Paréntesis "inteligente": cierra si hay uno abierto y lo anterior es un
+ * número o un cierre; si no, abre.
+ */
+function parentesis() {
+    const e = expresion.value;
+    const abiertos =
+        (e.match(/\(/g) ?? []).length - (e.match(/\)/g) ?? []).length;
+    const cierra = abiertos > 0 && /([\d)πe!%]|Ans)$/.test(e);
+
+    void insertar(cierra ? ')' : '(');
+}
+
 const teclasCientificas = computed<Tecla[]>(() => [
-    inversa.value
-        ? fn('sin⁻¹', 'asin(', 'Arcoseno')
-        : fn('sin', 'sin(', 'Seno'),
-    inversa.value
-        ? fn('cos⁻¹', 'acos(', 'Arcocoseno')
-        : fn('cos', 'cos(', 'Coseno'),
-    inversa.value
-        ? fn('tan⁻¹', 'atan(', 'Arcotangente')
-        : fn('tan', 'tan(', 'Tangente'),
-    inversa.value
-        ? fn('10ˣ', '10^', 'Diez a la')
-        : fn('log', 'log(', 'Logaritmo en base 10'),
-    inversa.value
-        ? fn('eˣ', 'e^', 'e a la')
-        : fn('ln', 'ln(', 'Logaritmo natural'),
-    inversa.value
-        ? fn('sinh', 'sinh(', 'Seno hiperbólico')
-        : fn('x²', '^2', 'Al cuadrado'),
-    inversa.value
-        ? fn('cosh', 'cosh(', 'Coseno hiperbólico')
-        : fn('xʸ', '^', 'Elevado a'),
-    inversa.value
-        ? fn('tanh', 'tanh(', 'Tangente hiperbólica')
-        : fn('√', '√(', 'Raíz cuadrada'),
-    inversa.value
-        ? fn('|x|', 'abs(', 'Valor absoluto')
-        : fn('∛', '∛(', 'Raíz cúbica'),
-    fn('n!', '!', 'Factorial'),
-    fn('π', 'π', 'Pi'),
-    fn('e', 'e', 'Número e'),
-    fn('(', '(', 'Abrir paréntesis'),
-    fn(')', ')', 'Cerrar paréntesis'),
-    fn('Ans', 'Ans', 'Resultado anterior'),
+    {
+        etiqueta: '2nd',
+        accion: () => (inversa.value = !inversa.value),
+        tipo: 'funcion',
+        aria: 'Segundas funciones',
+        activa: inversa.value,
+    },
+    {
+        etiqueta: modo.value === 'DEG' ? 'Deg' : 'Rad',
+        accion: cambiarModo,
+        tipo: 'funcion',
+        aria:
+            modo.value === 'DEG'
+                ? 'Ángulos en grados. Tocá para pasar a radianes'
+                : 'Ángulos en radianes. Tocá para pasar a grados',
+    },
+    dos(fn('√', '√(', 'Raíz cuadrada'), fn('∛', '∛(', 'Raíz cúbica')),
+    dos(fn('|x|', 'abs(', 'Valor absoluto'), fn('n!', '!', 'Factorial')),
+    dos(fn('sin', 'sin(', 'Seno'), fn('sin⁻¹', 'asin(', 'Arcoseno')),
+    dos(fn('cos', 'cos(', 'Coseno'), fn('cos⁻¹', 'acos(', 'Arcocoseno')),
+    dos(fn('tan', 'tan(', 'Tangente'), fn('tan⁻¹', 'atan(', 'Arcotangente')),
+    dos(fn('π', 'π', 'Pi'), fn('Ans', 'Ans', 'Resultado anterior')),
+    dos(
+        fn('ln', 'ln(', 'Logaritmo natural'),
+        fn('sinh', 'sinh(', 'Seno hiperbólico'),
+    ),
+    dos(
+        fn('log', 'log(', 'Logaritmo en base 10'),
+        fn('cosh', 'cosh(', 'Coseno hiperbólico'),
+    ),
+    dos(
+        fn('1/x', '^(−1)', 'Inverso'),
+        fn('tanh', 'tanh(', 'Tangente hiperbólica'),
+    ),
+    dos(fn('e', 'e', 'Número e'), fn(';', ';', 'Separar argumentos')),
+    dos(fn('eˣ', 'e^', 'e a la'), fn('10ˣ', '10^', 'Diez a la')),
+    dos(fn('x²', '^2', 'Al cuadrado'), fn('x³', '^3', 'Al cubo')),
+    dos(fn('xʸ', '^', 'Elevado a'), fn('EXP', '×10^', 'Por diez a la')),
+    fn('+/−', '(−', 'Negativo'),
 ]);
 
 const num = (d: string): Tecla => ({ etiqueta: d, inserta: d, tipo: 'numero' });
@@ -206,19 +231,14 @@ const op = (o: string, aria: string): Tecla => ({
 });
 
 const teclasBasicas: Tecla[] = [
-    { etiqueta: 'C', accion: limpiar, tipo: 'control', aria: 'Borrar todo' },
+    { etiqueta: 'C', accion: limpiar, tipo: 'numero', aria: 'Borrar todo' },
     {
         etiqueta: '⌫',
         accion: borrarUno,
-        tipo: 'control',
+        tipo: 'numero',
         aria: 'Borrar el último',
     },
-    {
-        etiqueta: ';',
-        inserta: ';',
-        tipo: 'control',
-        aria: 'Separar argumentos',
-    },
+    { etiqueta: '%', inserta: '%', tipo: 'numero', aria: 'Por ciento' },
     op('÷', 'Dividido'),
     num('7'),
     num('8'),
@@ -232,21 +252,16 @@ const teclasBasicas: Tecla[] = [
     num('2'),
     num('3'),
     op('+', 'Más'),
-    { etiqueta: 'EXP', inserta: '×10^', tipo: 'numero', aria: 'Por diez a la' },
+    {
+        etiqueta: '( )',
+        accion: parentesis,
+        tipo: 'numero',
+        aria: 'Paréntesis',
+    },
     num('0'),
     { etiqueta: ',', inserta: ',', tipo: 'numero', aria: 'Coma decimal' },
     { etiqueta: '=', accion: igual, tipo: 'igual', aria: 'Igual' },
 ];
-
-const estilos: Record<Tecla['tipo'], string> = {
-    numero: 'bg-card text-foreground hover:bg-muted text-xl',
-    control: 'bg-secondary text-foreground hover:bg-muted text-lg',
-    funcion:
-        'bg-secondary/70 text-foreground hover:bg-muted text-base font-medium',
-    operador:
-        'bg-celeste-suave text-primary hover:bg-celeste/30 text-2xl font-medium',
-    igual: 'bg-primary text-primary-foreground hover:bg-primary/90 text-2xl font-medium',
-};
 
 function tocar(t: Tecla) {
     if (t.accion) {
@@ -266,6 +281,7 @@ function alTeclear(ev: KeyboardEvent) {
         '+': '+',
         '^': '^',
         '!': '!',
+        '%': '%',
     };
 
     if (ev.key === 'Enter' || ev.key === '=') {
@@ -305,57 +321,46 @@ function reusarDeCinta(entrada: Record<string, unknown>) {
 <template>
     <EncabezadoCalculadora clave="cientifica" compacto />
 
-    <div class="grid items-start gap-6 lg:grid-cols-[minmax(0,34rem)_1fr]">
+    <div class="grid gap-6">
         <section
-            class="mx-auto w-full max-w-xl rounded-2xl border border-border bg-card p-3 shadow-sm sm:p-4"
+            class="-mx-4 -mt-5 bg-calc-fondo px-4 pt-2 pb-4 sm:mx-auto sm:mt-0 sm:w-full sm:max-w-xl sm:rounded-3xl sm:border sm:border-border sm:p-5 sm:shadow-sm lg:max-w-5xl dark:sm:border-transparent"
             aria-label="Calculadora científica"
         >
+            <!-- Barra de íconos -->
+            <div class="flex items-center gap-1 text-calc-pantalla">
+                <Link
+                    href="/historial"
+                    class="flex size-11 items-center justify-center rounded-full hover:bg-calc-num"
+                    aria-label="Historial"
+                >
+                    <History class="size-6" />
+                </Link>
+                <span
+                    class="ml-1 text-xs font-semibold tracking-wide"
+                    data-test="modo-visible"
+                    >{{ modo === 'DEG' ? 'GRADOS' : 'RADIANES' }}</span
+                >
+                <Link
+                    href="/calculadora"
+                    class="ml-auto flex size-11 items-center justify-center rounded-full hover:bg-calc-num"
+                    aria-label="Pasar a la calculadora normal"
+                >
+                    <Calculator class="size-6" />
+                </Link>
+                <button
+                    type="button"
+                    class="flex size-11 items-center justify-center rounded-full hover:bg-calc-num"
+                    aria-label="Copiar el resultado"
+                    @click="copiar"
+                >
+                    <Copy class="size-5" />
+                </button>
+            </div>
+
             <!-- Pantalla -->
-            <div
-                class="mb-2 rounded-xl bg-muted/60 px-3 py-2.5 sm:mb-3 sm:px-4 sm:py-3"
-            >
-                <div class="flex items-center gap-2 text-xs">
-                    <button
-                        type="button"
-                        class="h-9 rounded-md border border-border bg-card px-2.5 font-semibold text-primary"
-                        :aria-label="
-                            modo === 'DEG'
-                                ? 'Ángulos en grados. Tocá para pasar a radianes'
-                                : 'Ángulos en radianes. Tocá para pasar a grados'
-                        "
-                        data-test="modo"
-                        @click="cambiarModo"
-                    >
-                        {{ modo }}
-                    </button>
-                    <button
-                        type="button"
-                        :class="
-                            cn(
-                                'h-9 rounded-md border px-2.5 font-semibold transition-colors',
-                                inversa
-                                    ? 'border-primary bg-primary text-primary-foreground'
-                                    : 'border-border bg-card text-muted-foreground hover:text-foreground',
-                            )
-                        "
-                        :aria-pressed="inversa"
-                        aria-label="Funciones inversas e hiperbólicas"
-                        data-test="inversa"
-                        @click="inversa = !inversa"
-                    >
-                        2nd
-                    </button>
-                    <button
-                        type="button"
-                        class="ml-auto flex size-9 items-center justify-center rounded-md text-muted-foreground hover:bg-card hover:text-foreground"
-                        aria-label="Copiar el resultado"
-                        @click="copiar"
-                    >
-                        <Copy class="size-4" />
-                    </button>
-                </div>
+            <div class="px-2 pt-1 pb-2 sm:pt-4 sm:pb-3">
                 <p
-                    class="numeros mt-1 min-h-4 truncate text-right text-xs text-muted-foreground"
+                    class="numeros min-h-5 truncate text-right text-sm text-muted-foreground"
                     data-test="resuelta"
                 >
                     {{ expresionResuelta ? expresionResuelta + ' =' : '' }}
@@ -369,7 +374,7 @@ function reusarDeCinta(entrada: Record<string, unknown>) {
                     inputmode="none"
                     autocomplete="off"
                     spellcheck="false"
-                    class="numeros w-full bg-transparent text-right text-2xl outline-none placeholder:text-muted-foreground/60"
+                    class="numeros w-full bg-transparent text-right text-3xl font-light text-calc-pantalla caret-calc-pantalla outline-none placeholder:text-calc-pantalla/60 sm:text-4xl"
                     :placeholder="resultado === null ? '0' : ''"
                     data-test="expresion"
                     @keydown="alTeclear"
@@ -377,8 +382,10 @@ function reusarDeCinta(entrada: Record<string, unknown>) {
                 <output
                     :class="
                         cn(
-                            'numeros mt-1 block min-h-10 text-right font-semibold break-all',
-                            error ? 'text-base text-destructive' : 'text-3xl',
+                            'numeros mt-1 block min-h-10 text-right break-all',
+                            error
+                                ? 'text-base text-destructive'
+                                : 'text-4xl font-light text-calc-pantalla',
                         )
                     "
                     aria-live="polite"
@@ -390,58 +397,63 @@ function reusarDeCinta(entrada: Record<string, unknown>) {
                     }}</template>
                     <span
                         v-else-if="vistaPrevia"
-                        class="text-xl font-normal text-muted-foreground"
+                        class="text-2xl text-muted-foreground"
                         >= {{ vistaPrevia }}</span
                     >
                 </output>
             </div>
 
-            <div class="mb-2 grid grid-cols-5 gap-1.5">
-                <button
-                    v-for="t in teclasCientificas"
-                    :key="t.etiqueta"
-                    type="button"
-                    :class="
-                        cn(
-                            'h-11 rounded-lg border border-border/60 transition-colors select-none active:scale-[0.97]',
-                            estilos[t.tipo],
-                        )
-                    "
-                    :aria-label="t.aria ?? t.etiqueta"
-                    :data-tecla="t.etiqueta"
-                    @click="tocar(t)"
-                >
-                    {{ t.etiqueta }}
-                </button>
-            </div>
+            <div
+                class="grid gap-x-6 gap-y-2 [--alto-tecla:clamp(2.5rem,calc((100dvh-23rem)/9),3rem)] lg:grid-cols-2 lg:items-end lg:[--alto-tecla:3rem]"
+            >
+                <div class="grid grid-cols-4 gap-2">
+                    <TeclaCalc
+                        v-for="(t, i) in teclasCientificas"
+                        :key="i"
+                        variante="funcion"
+                        :activa="t.activa"
+                        :aria-label="t.aria ?? t.etiqueta"
+                        :aria-pressed="
+                            t.etiqueta === '2nd' ? inversa : undefined
+                        "
+                        :data-tecla="t.etiqueta"
+                        @click="tocar(t)"
+                    >
+                        {{ t.etiqueta }}
+                    </TeclaCalc>
+                </div>
 
-            <div class="grid grid-cols-4 gap-1.5">
-                <button
-                    v-for="t in teclasBasicas"
-                    :key="t.etiqueta"
-                    type="button"
-                    :class="
-                        cn(
-                            'numeros flex h-12 items-center justify-center rounded-xl border border-border/60 shadow-xs transition-colors select-none active:scale-[0.97] sm:h-14',
-                            estilos[t.tipo],
-                        )
-                    "
-                    :aria-label="t.aria ?? t.etiqueta"
-                    :data-tecla="t.etiqueta"
-                    @click="tocar(t)"
-                >
-                    <Delete v-if="t.etiqueta === '⌫'" class="size-5" />
-                    <template v-else>{{ t.etiqueta }}</template>
-                </button>
+                <div class="grid grid-cols-4 gap-2">
+                    <TeclaCalc
+                        v-for="(t, i) in teclasBasicas"
+                        :key="i"
+                        :variante="t.tipo"
+                        :aria-label="t.aria ?? t.etiqueta"
+                        :data-tecla="t.etiqueta"
+                        @click="tocar(t)"
+                    >
+                        <Delete v-if="t.etiqueta === '⌫'" class="size-6" />
+                        <span
+                            v-else
+                            :class="
+                                (t.tipo === 'operador' || t.tipo === 'igual') &&
+                                'text-3xl'
+                            "
+                            >{{ t.etiqueta }}</span
+                        >
+                    </TeclaCalc>
+                </div>
             </div>
-            <p class="mt-3 text-center text-xs text-muted-foreground">
-                Para logaritmos en otra base usá ; → log(8;2) = 3. Los
-                paréntesis que falten se cierran solos.
+            <p
+                class="mt-3 hidden text-center text-xs text-muted-foreground sm:block"
+            >
+                Con 2nd: inversas, hiperbólicas y ; para logaritmos en otra base
+                → log(8;2) = 3.
             </p>
         </section>
 
         <section
-            class="rounded-2xl border border-border bg-card p-4"
+            class="mx-auto w-full max-w-5xl rounded-2xl border border-border bg-card p-4"
             aria-labelledby="titulo-cinta"
         >
             <div class="mb-2 flex items-center justify-between">
@@ -465,9 +477,13 @@ function reusarDeCinta(entrada: Record<string, unknown>) {
             </p>
             <ul
                 v-else
-                class="max-h-[32rem] divide-y divide-border overflow-y-auto"
+                class="grid max-h-[32rem] gap-x-6 overflow-y-auto sm:grid-cols-2"
             >
-                <li v-for="c in cinta" :key="c.id">
+                <li
+                    v-for="c in cinta"
+                    :key="c.id"
+                    class="border-b border-border"
+                >
                     <button
                         type="button"
                         class="w-full rounded-md px-2 py-2.5 text-right transition-colors hover:bg-muted"
