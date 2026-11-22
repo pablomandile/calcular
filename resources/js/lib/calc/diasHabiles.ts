@@ -45,15 +45,19 @@ export function crearCalendario(
 function feriadoQueCuenta(iso: FechaISO, cal: Calendario): Feriado | undefined {
     const f = cal.feriados.get(iso);
 
-    if (
-        f &&
-        f.tipo === 'no_laborable' &&
-        cal.opciones.noLaborablesComoHabiles
-    ) {
+    if (f && esNoLaborable(f) && cal.opciones.noLaborablesComoHabiles) {
         return undefined;
     }
 
     return f;
+}
+
+/**
+ * Los puentes turísticos y los días no laborables son optativos para el
+ * sector privado (a diferencia de los feriados, que son obligatorios).
+ */
+export function esNoLaborable(f: Feriado): boolean {
+    return f.tipo === 'no_laborable' || f.tipo === 'puente';
 }
 
 export function esFinDeSemana(fecha: Date): boolean {

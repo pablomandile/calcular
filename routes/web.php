@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FeriadoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,5 +27,10 @@ Route::prefix('fechas')->name('fechas.')->group(function () {
     Route::inertia('sumar-restar', 'fechas/SumarRestar')->name('sumar-restar');
     Route::inertia('edad', 'fechas/Edad')->name('edad');
 });
+
+Route::get('api/feriados/{anio}', [FeriadoController::class, 'index'])
+    ->whereNumber('anio')
+    ->middleware('throttle:60,1')
+    ->name('feriados');
 
 require __DIR__.'/settings.php';

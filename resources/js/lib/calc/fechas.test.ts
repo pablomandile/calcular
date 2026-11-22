@@ -136,6 +136,17 @@ describe('días hábiles', () => {
         );
     });
 
+    it('los puentes también son no laborables', () => {
+        const flexible = crearCalendario(feriados, {
+            noLaborablesComoHabiles: true,
+        });
+        // Viernes 4/12 + 1 hábil: el lunes 7 es puente y el martes 8 feriado.
+        expect(sumarHabiles('2026-12-04', 1, cal).fecha).toBe('2026-12-09');
+        expect(sumarHabiles('2026-12-04', 1, flexible).fecha).toBe(
+            '2026-12-07',
+        );
+    });
+
     it('cuenta hábiles incluyendo las dos puntas', () => {
         const r = contarHabiles('2026-11-16', '2026-11-27', cal);
         expect(r.corridos).toBe(12);
