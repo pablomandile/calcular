@@ -404,7 +404,7 @@ function reusarDeCinta(entrada: Record<string, unknown>) {
             </div>
 
             <div
-                class="grid gap-x-6 gap-y-2 [--alto-tecla:clamp(2.5rem,calc((100dvh-23rem)/9),3rem)] lg:grid-cols-2 lg:items-end lg:[--alto-tecla:3rem]"
+                class="grid gap-x-6 gap-y-2 [--alto-tecla:clamp(2rem,calc((100dvh-23rem)/9),3rem)] lg:grid-cols-2 lg:items-end lg:[--alto-tecla:3rem]"
             >
                 <div class="grid grid-cols-4 gap-2">
                     <TeclaCalc

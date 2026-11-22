@@ -5,6 +5,7 @@ use App\Http\Controllers\FeriadoController;
 use App\Http\Controllers\HistorialController;
 use App\Http\Controllers\Legales\LegalesController;
 use App\Http\Controllers\Settings\DescargaDeDatosController;
+use App\Http\Controllers\TamanioTextoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,6 +42,37 @@ Route::get('api/feriados/{anio}', [FeriadoController::class, 'index'])
 Route::get('terminos', [LegalesController::class, 'terminos'])->name('terminos');
 Route::get('privacidad', [LegalesController::class, 'privacidad'])->name('privacidad');
 Route::inertia('cookies', 'Cookies')->name('cookies');
+
+// Tamaño de letra: sin sesión (se usa casi siempre sin cuenta).
+Route::put('tamanio-texto', [TamanioTextoController::class, 'update'])
+    ->middleware('throttle:30,1')
+    ->name('tamanio-texto.update');
+
+// Para los buscadores: las pantallas públicas de config/seo.php.
+Route::get('sitemap.xml', function () {
+    $urls = [];
+
+    foreach (array_keys(config('seo')) as $nombre) {
+        // El historial es personal: no se indexa.
+        if (is_string($nombre) && $nombre !== 'historial') {
+            $urls[] = route($nombre);
+        }
+    }
+
+    return response()
+        ->view('sitemap', ['urls' => $urls])
+        ->header('Content-Type', 'application/xml; charset=utf-8');
+})->name('sitemap');
+
+Route::get('robots.txt', fn () => response(
+    'User-agent: *
+Disallow: /settings
+Disallow: /api/
+Disallow: /terminos/aceptar
+
+Sitemap: '.route('sitemap').'
+',
+)->header('Content-Type', 'text/plain; charset=utf-8'))->name('robots');
 
 Route::middleware('auth')->group(function () {
     Route::get('terminos/aceptar', [LegalesController::class, 'aceptar'])->name('terminos.aceptar');

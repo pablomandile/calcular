@@ -2,8 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\TamanioTexto;
 use App\Services\IngresoConGoogleService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -46,6 +48,8 @@ class HandleInertiaRequests extends Middleware
                 'tieneContrasena' => $request->user()?->tieneContrasena() ?? false,
             ],
             'googleHabilitado' => IngresoConGoogleService::configurado(),
+            'tamanioTexto' => fn () => View::shared('tamanioTexto', TamanioTexto::porDefecto())->value,
+            'tamaniosTexto' => fn () => TamanioTexto::opciones(),
         ];
     }
 }

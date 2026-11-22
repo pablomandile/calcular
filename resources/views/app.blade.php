@@ -1,9 +1,25 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}"  @class(['dark' => ($appearance ?? 'system') == 'dark'])>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-texto="{{ ($tamanioTexto ?? \App\Enums\TamanioTexto::porDefecto())->value }}"  @class(['dark' => ($appearance ?? 'system') == 'dark'])>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-        <meta name="description" content="CalculAR: calculadora, científica, TNA y TEA, plazo fijo, porcentajes y fechas, pensadas para Argentina.">
+        @php
+            // Título y descripción por pantalla (config/seo.php): lo que leen
+            // los buscadores y lo que se ve al compartir un enlace.
+            // Array y no config('seo.'.$nombre): los nombres de ruta tienen
+            // puntos ("finanzas.plazo-fijo") y config() los toma como niveles.
+            $seo = config('seo')[request()->route()?->getName() ?? ''] ?? config('seo')['home'];
+            $tituloSeo = $seo['titulo'] === config('seo')['home']['titulo'] ? $seo['titulo'] : $seo['titulo'].' - CalculAR';
+        @endphp
+        <meta name="description" content="{{ $seo['descripcion'] }}">
+        <link rel="canonical" href="{{ url()->current() }}">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="CalculAR">
+        <meta property="og:locale" content="es_AR">
+        <meta property="og:title" content="{{ $tituloSeo }}">
+        <meta property="og:description" content="{{ $seo['descripcion'] }}">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta property="og:image" content="{{ url('/iconos/icon-512.png?v=1') }}">
         <meta name="theme-color" content="#2a6aa3">
 
         {{-- Inline script to detect system dark mode preference and apply it immediately --}}
@@ -73,7 +89,7 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
         <x-inertia::head>
-            <title>{{ config('app.name', 'Laravel') }}</title>
+            <title>{{ $tituloSeo }}</title>
         </x-inertia::head>
     </head>
     <body class="font-sans antialiased">

@@ -38,7 +38,7 @@ const secciones: Seccion[] = ['basicas', 'finanzas', 'fechas'];
         </div>
     </section>
 
-    <p class="mt-10 text-center text-sm text-muted-foreground md:hidden">
+    <p class="mt-10 text-center text-sm text-muted-foreground lg:hidden">
         <Link href="/terminos" class="underline underline-offset-4"
             >Términos</Link
         >

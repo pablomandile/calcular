@@ -34,7 +34,7 @@ const { visible, cerrar } = useAvisoCookies();
         :class="
             variante === 'apilado'
                 ? 'border-t border-border bg-card px-4 shadow-lg'
-                : 'fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card px-4 pb-[env(safe-area-inset-bottom)] shadow-lg md:inset-x-auto md:bottom-4 md:left-4 md:w-sm md:rounded-xl md:border md:pb-0'
+                : 'fixed inset-x-0 bottom-0 z-50 border-t border-border bg-card px-4 pb-[env(safe-area-inset-bottom)] shadow-lg lg:inset-x-auto lg:bottom-4 lg:left-4 lg:w-sm lg:rounded-xl lg:border lg:pb-0'
         "
     >
         <div class="flex flex-col gap-3 py-3">

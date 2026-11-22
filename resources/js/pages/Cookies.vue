@@ -46,6 +46,11 @@ const GRUPOS: Grupo[] = [
                 para: 'Si elegiste tema claro u oscuro, para dibujar la pantalla con ese tema desde el primer instante.',
                 dura: '1 año',
             },
+            {
+                nombre: 'tamanio_texto',
+                para: 'El tamaño de letra que elegiste, para que la pantalla cargue ya con ese tamaño. Con cuenta, también queda guardado en tu cuenta.',
+                dura: 'Hasta que lo cambies',
+            },
         ],
     },
     {

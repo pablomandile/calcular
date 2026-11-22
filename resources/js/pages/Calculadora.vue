@@ -360,7 +360,7 @@ function usarDeCinta(valor: unknown) {
             </div>
 
             <div
-                class="grid grid-cols-4 gap-3 [--alto-tecla:clamp(3rem,calc((100dvh-25rem)/5),5rem)] sm:[--alto-tecla:5rem]"
+                class="grid grid-cols-4 gap-3 [--alto-tecla:clamp(2.5rem,calc((100dvh-25rem)/5),5rem)] sm:[--alto-tecla:5rem]"
             >
                 <TeclaCalc
                     v-for="t in teclas"

@@ -40,6 +40,7 @@ class AceptoTerminos
         'finanzas.*',
         'fechas.*',
         'feriados',
+        'tamanio-texto.update',
         'terminos',
         'terminos.*',
         'privacidad',

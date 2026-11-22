@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TamanioTexto;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -23,6 +24,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string|null $google_id
  * @property string|null $avatar Foto de la cuenta de Google
  * @property string|null $password Null en las cuentas que entran con Google
+ * @property TamanioTexto $tamanio_texto
  * @property string|null $terminos_version
  * @property Carbon|null $terminos_aceptados_en
  * @property string|null $two_factor_secret
@@ -40,6 +42,16 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     use HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
 
     /**
+     * Un usuario recién construido ya trae el tamaño por defecto (sin esto la
+     * propiedad queda en null hasta recargarlo de la base).
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'tamanio_texto' => TamanioTexto::PORDEFECTO,
+    ];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -51,6 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
             'terminos_aceptados_en' => 'datetime',
+            'tamanio_texto' => TamanioTexto::class,
         ];
     }
 

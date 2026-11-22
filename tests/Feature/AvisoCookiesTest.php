@@ -125,6 +125,7 @@ class AvisoCookiesTest extends TestCase
         $this->assertStringContainsString((string) config('session.cookie'), $pagina);
         $this->assertStringContainsString('XSRF-TOKEN', $pagina);
         $this->assertStringContainsString('remember_web_', $pagina);
+        $this->assertStringContainsString('tamanio_texto', $pagina);
     }
 
     public function test_el_aviso_esta_en_todas_las_puertas_de_entrada(): void

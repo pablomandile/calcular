@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
 import AvisoCookies from '@/components/AvisoCookies.vue';
-import { LogIn, Moon, Sun } from '@lucide/vue';
+import { LogIn } from '@lucide/vue';
 import { computed } from 'vue';
 import BotonInstalar from '@/components/calcular/BotonInstalar.vue';
 import LogoCalculAR from '@/components/calcular/LogoCalculAR.vue';
+import MenuPantalla from '@/components/calcular/MenuPantalla.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,7 +15,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Toaster } from '@/components/ui/sonner';
 import UserMenuContent from '@/components/UserMenuContent.vue';
-import { useAppearance } from '@/composables/useAppearance';
 import { useCurrentUrl } from '@/composables/useCurrentUrl';
 import { getInitials } from '@/composables/useInitials';
 import type { ItemNav } from '@/lib/catalogo';
@@ -24,7 +24,6 @@ import { cn } from '@/lib/utils';
 const page = usePage();
 const usuario = computed(() => page.props.auth?.user ?? null);
 const { currentUrl } = useCurrentUrl();
-const { resolvedAppearance, updateAppearance } = useAppearance();
 
 /** En escritorio hay lugar para Porcentajes como ítem propio. */
 const navEscritorio: ItemNav[] = [
@@ -49,10 +48,6 @@ function estaActivo(item: ItemNav): boolean {
             currentUrl.value.startsWith(ruta + '/'),
     );
 }
-
-function alternarTema() {
-    updateAppearance(resolvedAppearance.value === 'dark' ? 'light' : 'dark');
-}
 </script>
 
 <template>
@@ -68,7 +63,7 @@ function alternarTema() {
                 </Link>
 
                 <nav
-                    class="ml-4 hidden flex-1 items-center gap-1 md:flex"
+                    class="ml-4 hidden flex-1 items-center gap-1 lg:flex"
                     aria-label="Principal"
                 >
                     <Link
@@ -88,21 +83,10 @@ function alternarTema() {
                 </nav>
 
                 <div class="ml-auto flex items-center gap-1">
-                    <BotonInstalar variante="icono" />
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        class="size-10"
-                        :aria-label="
-                            resolvedAppearance === 'dark'
-                                ? 'Usar tema claro'
-                                : 'Usar tema oscuro'
-                        "
-                        @click="alternarTema"
-                    >
-                        <Sun v-if="resolvedAppearance === 'dark'" />
-                        <Moon v-else />
-                    </Button>
+                    <div class="hidden sm:block">
+                        <BotonInstalar variante="icono" />
+                    </div>
+                    <MenuPantalla />
 
                     <DropdownMenu v-if="usuario">
                         <DropdownMenuTrigger :as-child="true">
@@ -148,13 +132,13 @@ function alternarTema() {
         </header>
 
         <main
-            class="mx-auto w-full max-w-6xl flex-1 px-4 pt-5 pb-28 md:pt-8 md:pb-12"
+            class="mx-auto w-full max-w-6xl flex-1 px-4 pt-5 pb-28 md:pt-8 lg:pb-12"
         >
             <slot />
         </main>
 
         <footer
-            class="hidden border-t border-border/80 py-6 text-center text-sm text-muted-foreground md:block"
+            class="hidden border-t border-border/80 py-6 text-center text-sm text-muted-foreground lg:block"
         >
             Calcul<span class="font-semibold text-celeste">AR</span> · Hecho en
             Argentina · Los resultados son orientativos ·
@@ -175,7 +159,7 @@ function alternarTema() {
             Zona fija inferior del celular: el aviso de cookies va acá adentro,
             apilado arriba de la barra, para no taparla.
         -->
-        <div class="fixed inset-x-0 bottom-0 z-30 md:hidden">
+        <div class="fixed inset-x-0 bottom-0 z-30 lg:hidden">
             <AvisoCookies variante="apilado" />
             <nav
                 class="zona-segura-abajo border-t border-border bg-card/95 backdrop-blur"
@@ -213,7 +197,7 @@ function alternarTema() {
         </div>
 
         <!-- Escritorio: tarjeta abajo a la izquierda (los avisos van arriba). -->
-        <AvisoCookies class="hidden md:block" />
+        <AvisoCookies class="hidden lg:block" />
 
         <Toaster position="top-center" />
     </div>

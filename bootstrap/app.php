@@ -3,6 +3,7 @@
 use App\Http\Middleware\AceptoTerminos;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\HandleTamanioTexto;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,10 +17,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->encryptCookies(except: ['appearance']);
+        $middleware->encryptCookies(except: ['appearance', 'tamanio_texto']);
 
         $middleware->web(append: [
             HandleAppearance::class,
+            // Antes de HandleInertiaRequests: comparte el tamaño con la vista.
+            HandleTamanioTexto::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
             // En todo el grupo web: una ruta nueva nace cubierta. Las exentas

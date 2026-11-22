@@ -204,6 +204,25 @@
     }
 }
 
+/*
+ * Tamaño de letra elegido (App\Enums\TamanioTexto), escrito por el servidor
+ * en <html data-texto>. En % y no en px: se multiplica con el tamaño que la
+ * persona configuró en su navegador en vez de pisarlo. Tailwind mide en rem,
+ * así que escala texto y espaciado.
+ */
+:root {
+    font-size: 100%;
+}
+html[data-texto='pequeno'] {
+    font-size: 87.5%;
+}
+html[data-texto='normal'] {
+    font-size: 100%;
+}
+html[data-texto='grande'] {
+    font-size: 112.5%;
+}
+
 /* Números alineados en columnas: resultados, teclado, historial. */
 .numeros {
     font-variant-numeric: tabular-nums;
