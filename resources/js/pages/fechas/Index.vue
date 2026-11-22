@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
+import PreguntasFrecuentes from '@/components/calcular/PreguntasFrecuentes.vue';
 import TarjetaCalculadora from '@/components/calcular/TarjetaCalculadora.vue';
 import { deSeccion } from '@/lib/catalogo';
+import { preguntasFechas } from '@/lib/preguntasFrecuentes';
 </script>
 
 <template>
@@ -18,4 +20,5 @@ import { deSeccion } from '@/lib/catalogo';
             :calculadora="c"
         />
     </div>
+    <PreguntasFrecuentes :preguntas="preguntasFechas" />
 </template>
