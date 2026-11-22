@@ -21,6 +21,7 @@ import {
     Scale,
     Sigma,
     TrendingUp,
+    Wallet,
 } from '@lucide/vue';
 
 /**
@@ -90,6 +91,15 @@ export const calculadoras: Calculadora[] = [
             'Cómo crece un capital con reinversión y aportes periódicos.',
         href: '/finanzas/interes-compuesto',
         icono: PiggyBank,
+        seccion: 'finanzas',
+    },
+    {
+        clave: 'rendimiento-cuenta',
+        titulo: 'Rendimiento de tu cuenta',
+        descripcion:
+            'Cuánto te rinde por día la plata en Mercado Pago o tu banco.',
+        href: '/finanzas/rendimiento-cuenta',
+        icono: Wallet,
         seccion: 'finanzas',
     },
     {

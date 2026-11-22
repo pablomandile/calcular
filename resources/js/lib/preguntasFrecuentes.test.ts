@@ -10,6 +10,7 @@ import { inflacionAcumulada } from './calc/inflacion';
 import { D } from './calc/numero';
 import { interesEnCuotas } from './calc/cuotas';
 import { descuentoConTope } from './calc/descuentos';
+import { rendimientoCuenta } from './calc/rendimiento';
 import { teaDesdeTna } from './calc/tasas';
 import {
     preguntasFechas,
@@ -141,6 +142,17 @@ describe('preguntas frecuentes de finanzas: los ejemplos son ciertos', () => {
         expect(r.tasaMensual.toDecimalPlaces(4).toNumber()).toBe(0.0455);
         expect(r.tea.toDecimalPlaces(3).toNumber()).toBe(0.706);
         expect(r.recargoPorcentaje.toNumber()).toBe(0.32);
+    });
+
+    it('$ 1.000.000 al 18,8 % TNA: $ 515,07 por día y 20,68 % TEA', () => {
+        const respuesta = texto('¿Cuánto me rinde por día');
+
+        expect(respuesta).toContain('$ 515,07');
+        expect(respuesta).toContain('20,68 %');
+        const r = rendimientoCuenta(new D(1000000), new D('0.188'), 'tna');
+
+        expect(r.porDia.toDecimalPlaces(2).toNumber()).toBe(515.07);
+        expect(r.tea.toDecimalPlaces(4).toNumber()).toBe(0.2068);
     });
 
     it('20 % con tope de $ 6.000: hasta $ 30.000; con $ 60.000, 10 % real', () => {

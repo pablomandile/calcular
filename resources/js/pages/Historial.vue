@@ -39,6 +39,7 @@ const filtros: { valor: Filtro; titulo: string; tipos: TipoCalculo[] }[] = [
             'tna-tea',
             'plazo-fijo',
             'interes-compuesto',
+            'rendimiento-cuenta',
             'interes-en-cuotas',
             'contado-vs-cuotas',
             'descuento-con-tope',

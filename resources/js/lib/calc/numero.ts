@@ -135,7 +135,7 @@ export function formatearPorcentaje(
         formatearNumero(d.times(100), {
             maxDecimales: decimales,
             minDecimales: decimales,
-        }) + ' %'
+        }) + ' %' // espacio duro: el % no queda solo en otra línea
     );
 }
 

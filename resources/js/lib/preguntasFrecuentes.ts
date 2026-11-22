@@ -140,6 +140,13 @@ export const preguntasFinanzas: PreguntaFrecuente[] = [
         ],
     },
     {
+        pregunta:
+            '¿Cuánto me rinde por día la plata en Mercado Pago o en una cuenta remunerada?',
+        respuesta: [
+            'Si la tasa es TNA (lo habitual), dividila por 365 y multiplicala por el saldo. Con $ 1.000.000 al 18,8 % TNA son $ 515,07 por día. Como los intereses se acreditan todos los días y vuelven a rendir, en un año eso da una TEA de 20,68 %.',
+        ],
+    },
+    {
         pregunta: '¿Por qué el recargo de las cuotas no es la tasa de interés?',
         respuesta: [
             'Porque no tiene en cuenta cuándo pagás. Pagar $ 1.320.000 en 12 cuotas por algo de $ 1.000.000 es un recargo de 32 %, pero la tasa real es 4,55 % mensual: una TEA de 70,6 %. La calculadora de interés en cuotas la saca por vos.',

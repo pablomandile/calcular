@@ -24,6 +24,7 @@ Route::prefix('finanzas')->name('finanzas.')->group(function () {
     Route::inertia('tna-tea', 'finanzas/TnaTea')->name('tna-tea');
     Route::inertia('plazo-fijo', 'finanzas/PlazoFijo')->name('plazo-fijo');
     Route::inertia('interes-compuesto', 'finanzas/InteresCompuesto')->name('interes-compuesto');
+    Route::inertia('rendimiento-cuenta', 'finanzas/RendimientoCuenta')->name('rendimiento-cuenta');
     Route::inertia('interes-en-cuotas', 'finanzas/InteresEnCuotas')->name('interes-en-cuotas');
     Route::inertia('contado-vs-cuotas', 'finanzas/ContadoVsCuotas')->name('contado-vs-cuotas');
     Route::inertia('descuento-con-tope', 'finanzas/DescuentoConTope')->name('descuento-con-tope');

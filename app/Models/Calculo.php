@@ -37,6 +37,7 @@ class Calculo extends Model
         'tna-tea',
         'plazo-fijo',
         'interes-compuesto',
+        'rendimiento-cuenta',
         'interes-en-cuotas',
         'contado-vs-cuotas',
         'descuento-con-tope',

@@ -28,7 +28,7 @@ return [
     ],
     'finanzas.index' => [
         'titulo' => 'Calculadoras financieras',
-        'descripcion' => 'TNA y TEA, plazo fijo, interés compuesto, interés en cuotas, contado o cuotas, descuentos con tope y porcentajes, con las fórmulas explicadas.',
+        'descripcion' => 'TNA y TEA, plazo fijo, rendimiento de cuentas remuneradas, interés compuesto, interés en cuotas, contado o cuotas, descuentos con tope y porcentajes, con las fórmulas explicadas.',
     ],
     'finanzas.tna-tea' => [
         'titulo' => 'Calculadora de TNA a TEA (y TEA a TNA)',
@@ -41,6 +41,10 @@ return [
     'finanzas.interes-compuesto' => [
         'titulo' => 'Calculadora de interés compuesto',
         'descripcion' => 'Cómo crece un capital con reinversión y aportes periódicos, año por año y con gráfico.',
+    ],
+    'finanzas.rendimiento-cuenta' => [
+        'titulo' => 'Cuánto rinde tu cuenta por día',
+        'descripcion' => 'Cuánto te rinde por día, por mes y por año la plata en Mercado Pago, Ualá, Naranja X o una cuenta remunerada, y si le gana a la inflación.',
     ],
     'finanzas.interes-en-cuotas' => [
         'titulo' => 'Calculadora de interés en cuotas',

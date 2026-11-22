@@ -32,6 +32,7 @@ const PUBLICAS = [
     '/finanzas/tna-tea',
     '/finanzas/plazo-fijo',
     '/finanzas/interes-compuesto',
+    '/finanzas/rendimiento-cuenta',
     '/finanzas/interes-en-cuotas',
     '/finanzas/contado-vs-cuotas',
     '/finanzas/descuento-con-tope',

@@ -56,7 +56,7 @@ describe('formatearNumero', () => {
     });
 
     it('formatea porcentajes y pesos', () => {
-        expect(formatearPorcentaje('0.795856')).toBe('79,59 %');
+        expect(formatearPorcentaje('0.795856')).toBe('79,59 %');
         expect(formatearPesos('1234.5')).toBe('$ 1.234,50');
         expect(parsearNumero(formatearPesos('1234.5'))!.toNumber()).toBe(
             1234.5,
