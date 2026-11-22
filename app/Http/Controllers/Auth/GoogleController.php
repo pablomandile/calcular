@@ -74,6 +74,6 @@ class GoogleController extends Controller
         Auth::login($usuario, remember: true);
         $request->session()->regenerate();
 
-        return redirect()->intended(route('historial'));
+        return redirect()->intended(route('home'));
     }
 }

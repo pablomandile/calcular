@@ -58,7 +58,7 @@ class IngresoConGoogleTest extends TestCase
         $this->conCredenciales();
         $this->respuestaDeGoogle('sub-123', 'ana@example.com');
 
-        $this->get(route('google.callback'))->assertRedirect(route('historial'));
+        $this->get(route('google.callback'))->assertRedirect(route('home'));
 
         $usuario = User::firstWhere('email', 'ana@example.com');
         $this->assertNotNull($usuario);
@@ -79,7 +79,7 @@ class IngresoConGoogleTest extends TestCase
         $existente = User::factory()->unverified()->create(['email' => 'ana@example.com', 'password' => 'clave-de-antes']);
         $this->respuestaDeGoogle('sub-123', 'ana@example.com');
 
-        $this->get(route('google.callback'))->assertRedirect(route('historial'));
+        $this->get(route('google.callback'))->assertRedirect(route('home'));
 
         $this->assertSame(1, User::count());
         $existente->refresh();

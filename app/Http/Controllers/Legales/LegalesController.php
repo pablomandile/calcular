@@ -46,7 +46,7 @@ class LegalesController extends Controller
     {
         $request->user()->aceptarTerminos();
 
-        return redirect()->intended(route('historial'));
+        return redirect()->intended(route('home'));
     }
 
     private function texto(string $cual): Response
