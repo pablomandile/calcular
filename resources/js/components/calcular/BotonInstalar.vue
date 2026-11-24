@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Download } from '@lucide/vue';
-import { ref } from 'vue';
+import { Download, X } from '@lucide/vue';
+import { onMounted, ref } from 'vue';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -10,6 +10,7 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { usePwaInstall } from '@/composables/usePwaInstall';
+import { almacenLocal } from '@/lib/navegador';
 
 /**
  * "Instalar app". Solo aparece si se puede instalar y todavía no está
@@ -21,6 +22,21 @@ import { usePwaInstall } from '@/composables/usePwaInstall';
 withDefaults(defineProps<{ variante?: 'icono' | 'tarjeta' }>(), {
     variante: 'tarjeta',
 });
+
+// La tarjeta se puede cerrar con la X y no vuelve a aparecer; el ícono del
+// encabezado queda, para instalarla igual. Se lee al montar, como el aviso de
+// cookies: así el primer render es el mismo en todos lados.
+const CLAVE_OCULTA = 'calcular.instalar-oculto';
+const oculta = ref(true);
+
+onMounted(() => {
+    oculta.value = almacenLocal.leer(CLAVE_OCULTA) === '1';
+});
+
+function cerrar() {
+    oculta.value = true;
+    almacenLocal.guardar(CLAVE_OCULTA, '1');
+}
 
 const { puedeInstalar, ios, instalar } = usePwaInstall();
 const ayuda = ref(false);
@@ -60,9 +76,21 @@ async function alTocar() {
         </Button>
 
         <section
-            v-else
-            class="flex items-center gap-4 rounded-2xl border border-celeste/60 bg-celeste-suave p-4"
+            v-else-if="!oculta"
+            class="relative flex flex-wrap items-center gap-4 rounded-2xl border border-celeste/60 bg-celeste-suave p-4 sm:flex-nowrap sm:pr-12"
+            data-test="tarjeta-instalar"
         >
+            <Button
+                variant="ghost"
+                size="icon"
+                class="absolute top-1.5 right-1.5 size-9 text-muted-foreground"
+                aria-label="Cerrar"
+                title="No mostrar más"
+                data-test="cerrar-instalar"
+                @click="cerrar"
+            >
+                <X />
+            </Button>
             <img
                 src="/iconos/icon-192.png?v=2"
                 alt=""
@@ -70,7 +98,8 @@ async function alTocar() {
                 width="48"
                 height="48"
             />
-            <div class="min-w-0 flex-1">
+            <!-- pr-7: en el celular el texto no pasa por debajo de la X; desde sm la deja libre el pr-12 -->
+            <div class="min-w-0 flex-1 pr-7 sm:pr-0">
                 <p class="font-semibold">Instalá CalculAR</p>
                 <p class="text-sm text-muted-foreground">
                     Abrila desde la pantalla de inicio, como una app. Funciona
@@ -78,7 +107,7 @@ async function alTocar() {
                 </p>
             </div>
             <Button
-                class="h-11 shrink-0"
+                class="h-11 shrink-0 max-sm:w-full"
                 :disabled="ocupado"
                 data-test="instalar-app"
                 @click="alTocar"

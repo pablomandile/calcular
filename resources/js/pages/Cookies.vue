@@ -99,6 +99,11 @@ const GRUPOS: Grupo[] = [
                 dura: 'Hasta que salgas de la cuenta o haya una versión nueva',
             },
             {
+                nombre: 'calcular.instalar-oculto',
+                para: 'Que cerraste la tarjeta para instalar la app del Inicio, para no volver a mostrártela.',
+                dura: 'Hasta que borres los datos del navegador',
+            },
+            {
                 nombre: 'calcular.aviso-cookies',
                 para: 'Que ya leíste el aviso de cookies, para no volver a mostrártelo.',
                 dura: 'Hasta que borres los datos del navegador',
